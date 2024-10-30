@@ -13,7 +13,7 @@
 
 <header>
     <img src={logo} alt="Inlet.Shop logo">
-    <h3>Inlet.Shop > {name}</h3>
+    <h3><span class="inletShop">Inlet.Shop</span> > {name}</h3>
 
     <div class="pages">
         <button onclick={()=>{changePage("about")}}>About</button>
@@ -58,5 +58,9 @@
 
     .pages button:hover{
         color: rgb(175, 175, 175);
+    }
+
+    .inletShop{
+        color: rgba(255, 0, 0, 0.55);
     }
 </style>

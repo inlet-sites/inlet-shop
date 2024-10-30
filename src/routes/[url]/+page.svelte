@@ -1,6 +1,7 @@
 <script>
     import "../../global.css";
     import {onMount} from "svelte";
+    import {slide} from "svelte/transition";
     import logo from "$lib/logo.png";
     import Loader from "../../components/Loader.svelte";
     import Notifier from "../../components/Notifier.svelte";
@@ -11,6 +12,7 @@
     let page = $state("about");
     let loader = $state(false);
     let vendor = $state({});
+    let products = $state([]);
     let notifier = $state({type: "", message: ""});
 
     const changePage = (event)=>{
@@ -41,6 +43,21 @@
                     notifier.message = response.message;
                 }else{
                     vendor = response;
+                    return fetch(`${import.meta.env.VITE_API_URL}/product/vendor/${vendor.id}`, {
+                        method: "get",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                }
+            })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    notifier.type = "error";
+                    notifier.message = response.message
+                }else{
+                    products = response;
                 }
             })
             .catch((err)=>{
@@ -69,7 +86,7 @@
 
 {#if page === "shop"}
     <Shop
-        vendorId={vendor.id}
+        products={products}
         on:loader={updateLoader}
         on:notify={notify}
     />

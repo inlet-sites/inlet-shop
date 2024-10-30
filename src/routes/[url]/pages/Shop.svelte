@@ -1,11 +1,26 @@
 <script>
-    import {onMount, createEventDispatcher} from "svelte";
+    import {createEventDispatcher} from "svelte";
+    import {slide} from "svelte/transition";
 
     const dispatch = createEventDispatcher();
-    let {vendorId} = $props();
-    let products = $state([]);
+    let {products} = $props();
     let tagElems = $state();
-    let tags = $state({});
+    let tags = $derived.by(()=>{
+        const obj = {};
+        obj["all"] = [];
+        for(let i = 0; i < products.length; i++){
+            obj["all"].push(products[i]);
+            for(let j = 0; j < products[i].tags.length; j++){
+                if(obj[products[i].tags[j]]){
+                    obj[products[i].tags[j]].push(products[i]);
+                }else{
+                    obj[products[i].tags[j]] = [products[i]];
+                }
+            }
+        }
+        return obj;
+    });
+    let displayProducts = $state(tags.all);
 
     const setActiveTag = (elem)=>{
         for(let i = 0; i < tagElems.children.length; i++){
@@ -16,58 +31,11 @@
 
     const tagSearch = (event, tag)=>{
         setActiveTag(event.target);
-        products = tags[tag];
+        displayProducts = tags[tag];
     }
-
-    const createTagMap = (p)=>{
-        const obj = {};
-        obj["all"] = [];
-        for(let i = 0; i < p.length; i++){
-            obj["all"].push(p[i]);
-            for(let j = 0; j < p[i].tags.length; j++){
-                if(obj[p[i].tags[j]]){
-                    obj[p[i].tags[j]].push(p[i]);
-                }else{
-                    obj[p[i].tags[j]] = [p[i]];
-                }
-            }
-        }
-        return obj;
-    }
-
-    onMount(()=>{
-        dispatch("loader", {on: true});
-        fetch(`${import.meta.env.VITE_API_URL}/product/vendor/${vendorId}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    dispatch("notify", {
-                        type: "error",
-                        message: response.message
-                    });
-                }else{
-                    tags = createTagMap(response);
-                    products = tags.all;
-                }
-            })
-            .catch((err)=>{
-                dispatch("notify", {
-                    type: "error",
-                    message: "Something went wrong, try refreshing the page"
-                });
-            })
-            .finally(()=>{
-                dispatch("loader", {on: false});
-            });
-    });
 </script>
 
-<div class="Shop">
+<div class="Shop" transition:slide>
     <div class="tags" bind:this={tagElems}>
         {#each Object.keys(tags) as tag}
             <button class="tag" onclick={()=>{tagSearch(event, tag)}}>{tag.toUpperCase()}</button>
@@ -75,7 +43,7 @@
     </div>
 
     <div class="products">
-        {#each products as product}
+        {#each displayProducts as product}
             <button class="product">
                 <img
                     src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}"
