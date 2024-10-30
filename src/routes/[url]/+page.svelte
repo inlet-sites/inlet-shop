@@ -5,14 +5,25 @@
     import Loader from "../../components/Loader.svelte";
     import Notifier from "../../components/Notifier.svelte";
     import Header from "./Header.svelte";
+    import Shop from "./pages/Shop.svelte";
 
     let {data} = $props();
     let page = $state("about");
     let loader = $state(false);
     let vendor = $state({});
+    let notifier = $state({type: "", message: ""});
 
     const changePage = (event)=>{
         page = event.detail.page;
+    }
+
+    const updateLoader = (event)=>{
+        loader = event.detail.on;
+    }
+
+    const notify = (event)=>{
+        notifier.type = event.detail.type;
+        notifier.message = event.detail.message;
     }
 
     onMount(()=>{
@@ -46,11 +57,20 @@
     <Loader/>
 {/if}
 
+<Notifier
+    type={notifier.type}
+    message={notifier.message}
+/>
+
 <Header
-    name={vendor.name}
+    name={vendor.store}
     on:changePage={changePage}
 />
 
 {#if page === "shop"}
-
+    <Shop
+        vendorId={vendor.id}
+        on:loader={updateLoader}
+        on:notify={notify}
+    />
 {/if}
