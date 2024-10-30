@@ -46,7 +46,7 @@
 
 <header>
     <img src={logo} alt="Inlet Shop logo">
-    <h2>Inlet Sites</h2>
+    <h2>Inlet.Shop</h2>
 
     <a href="https://vendor.inlet.shop">Become a Vendor</a>
 </header>
