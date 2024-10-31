@@ -7,6 +7,7 @@
     import Notifier from "../../components/Notifier.svelte";
     import Header from "./Header.svelte";
     import Shop from "./pages/Shop.svelte";
+    import About from "./pages/About.svelte";
 
     let {data} = $props();
     let page = $state("about");
@@ -87,6 +88,12 @@
 {#if page === "shop"}
     <Shop
         products={products}
+        on:loader={updateLoader}
+        on:notify={notify}
+    />
+{:else if page === "about"}
+    <About
+        vendor={vendor}
         on:loader={updateLoader}
         on:notify={notify}
     />

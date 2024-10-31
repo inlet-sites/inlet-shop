@@ -53,7 +53,7 @@
 
 <div class="vendors">
     {#each vendors as vendor}
-        <a href="/vendor/{vendor.url}" class="vendor">
+        <a href="/{vendor.url}" class="vendor">
             <h2>{vendor.store}</h2>
             <img src="{import.meta.env.VITE_API_URL}/document/{vendor.image}" alt={vendor.name}>
         </a>
