@@ -79,6 +79,10 @@
         color: rgba(255, 0, 0, 0.55);
     }
 
+    .mobilePages{
+        display: none;
+    }
+
     @media screen and (max-width: 900px){
         header{
             flex-direction: column;

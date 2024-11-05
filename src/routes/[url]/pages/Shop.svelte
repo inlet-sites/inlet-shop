@@ -6,6 +6,7 @@
     const dispatch = createEventDispatcher();
     let {products} = $props();
     let singleProduct = $state(null);
+    let selectedTag = $state("all");
     let tagElems = $state();
     let displayProducts = $state();
     let tags = $derived.by(()=>{
@@ -66,6 +67,10 @@
                 dispatch("loader", {on: false});
             });
     }
+
+    const tagSelect = ()=>{
+        displayProducts = tags[selectedTag];
+    }
 </script>
 
 
@@ -81,6 +86,16 @@
             <button class="tag" onclick={()=>{tagSearch(event, tag)}}>{tag.toUpperCase()}</button>
         {/each}
     </div>
+
+    <select
+        class="mobileTags"
+        bind:value={selectedTag}
+        onchange={tagSelect}
+    >
+        {#each Object.keys(tags) as tag}
+            <option class="mobileTag" value={tag}>{tag.toUpperCase()}</option>
+        {/each}
+    </select>
 
     <div class="products">
         {#each displayProducts as product}
@@ -109,6 +124,13 @@
         align-items: center;
         flex-wrap: wrap;
         margin: 35px;
+    }
+
+    .mobileTags{
+        display: none;
+        margin: 15px auto;
+        font-size: 24px;
+        text-align: center;
     }
 
     .tag{
@@ -144,5 +166,15 @@
 
     .product img{
         width: 100%;
+    }
+
+    @media screen and (max-width: 900px){
+        .tags{
+            display: none;
+        }
+
+        .mobileTags{
+            display: block;
+        }
     }
 </style>
