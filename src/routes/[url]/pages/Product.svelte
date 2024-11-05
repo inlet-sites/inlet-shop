@@ -1,15 +1,32 @@
 <script>
-    let {product} = $props();
+    import Images from "../components/Images.svelte";
 
-    const showImages = ()=>{
-        console.log("showing images");
+    let {product} = $props();
+    let images = $state(false);
+    let clickedImage = $state(0);
+
+    const showImages = (i)=>{
+        clickedImage = i;
+        images = true;
+    }
+
+    const closeImages = ()=>{
+        images = false;
     }
 </script>
 
 <div class="Product">
+    {#if images}
+        <Images
+            images={product.images}
+            idx={clickedImage}
+            on:close={closeImages}
+        />
+    {/if}
+
     <div class="images">
         {#each product.images as image, i}
-            <button onclick={showImages}>
+            <button onclick={()=>{showImages(i)}}>
                 <img src="{import.meta.env.VITE_API_URL}/document/{image}" alt="{product.name} #{i+1}">
             </button>
         {/each}
