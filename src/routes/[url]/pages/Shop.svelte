@@ -169,6 +169,10 @@
     }
 
     @media screen and (max-width: 900px){
+        .Shop{
+            height: initial;
+        }
+
         .tags{
             display: none;
         }

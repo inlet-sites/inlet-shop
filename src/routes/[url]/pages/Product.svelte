@@ -98,6 +98,7 @@
 
     .tags{
         display: flex;
+        flex-wrap: wrap;
         margin: 15px 0;
         margin: 15px auto 15px 0;
     }
@@ -112,5 +113,33 @@
     .description{
         font-size: 18px;
         line-height: 28px;
+    }
+
+    @media screen and (max-width: 800px){
+        .Product{
+            flex-direction: column-reverse;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 15px 0 0 0;
+        }
+
+        .otherDetails{
+            width: 100%;
+            padding: 25px;
+        }
+
+        .images{
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            width: 100%;
+            overflow-y: initial;
+            margin-top: 35px;
+            max-height: initial;
+        }
+
+        .images button{
+            width: 250px;
+        }
     }
 </style>
