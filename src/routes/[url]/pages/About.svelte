@@ -21,7 +21,7 @@
     <h2>Contact Information</h2>
 
     <ul>
-        {#if vendor.contact.phone}
+        {#if vendor.contact?.phone}
             <li>
                 <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M18.1182 14.702L14 15.5C11.2183 14.1038 9.5 12.5 8.5 10L9.26995 5.8699L7.81452 2L4.0636 2C2.93605 2 2.04814 2.93178 2.21654 4.04668C2.63695 6.83 3.87653 11.8765 7.5 15.5C11.3052 19.3052 16.7857 20.9564 19.802 21.6127C20.9668 21.8662 22 20.9575 22 19.7655L22 16.1812L18.1182 14.702Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -29,7 +29,7 @@
                 <p>{vendor.contact.phone}</p>
             </li>
         {/if}
-        {#if vendor.contact.email}
+        {#if vendor.contact?.email}
             <li>
                 <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M7 9L12 12.5L17 9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -38,7 +38,7 @@
                 <p>{vendor.contact.email}</p>
             </li>
         {/if}
-        {#if vendor.contact.address}
+        {#if vendor.contact?.address}
             <li>
                 <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
                     <path d="M20 10C20 14.4183 12 22 12 22C12 22 4 14.4183 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10Z" stroke="#ffffff" stroke-width="1.5"></path>

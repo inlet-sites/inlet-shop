@@ -1,5 +1,6 @@
 :root{
     --text: rgb(225, 225, 225);
+    --background: rgb(0, 0, 25);
 }
 
 *{
