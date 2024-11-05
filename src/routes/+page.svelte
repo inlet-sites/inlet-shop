@@ -45,8 +45,10 @@
 {/if}
 
 <header>
-    <img src={logo} alt="Inlet Shop logo">
-    <h2>Inlet.Shop</h2>
+    <div class="logoContainer">
+        <img src={logo} alt="Inlet Shop logo">
+        <h2>Inlet.Shop</h2>
+    </div>
 
     <a href="https://vendor.inlet.shop">Become a Vendor</a>
 </header>
@@ -67,6 +69,12 @@
         height: 100px;
         width: 100vw;
         padding-left: 35px;
+    }
+
+    .logoContainer{
+        display: flex;
+        align-items: center;
+        height: 100%;
     }
 
     header img{
@@ -108,5 +116,17 @@
     .vendor img{
         max-width: 75%;
         max-height: 75%;
+    }
+
+    @media screen and (max-width: 600px){
+        header{
+            flex-direction: column;
+            padding: 0;
+            margin-bottom: 35px;
+        }
+
+        header a{
+            margin: 0;
+        }
     }
 </style>
