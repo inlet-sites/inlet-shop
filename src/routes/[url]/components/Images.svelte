@@ -90,4 +90,23 @@
     .right{
         right: 35px;
     }
+
+    @media screen and (max-width: 900px){
+        .Images{
+            position: fixed;
+        }
+
+        .imageButton{
+            top: initial;
+            bottom: 35px;
+        }
+
+        .left{
+            left: calc(50% - 75px);
+        }
+
+        .right{
+            right: calc(50% - 75px);
+        }
+    }
 </style>
