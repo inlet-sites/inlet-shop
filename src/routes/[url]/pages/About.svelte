@@ -115,4 +115,23 @@
     li svg{
         margin-right: 15px;
     }
+
+    @media screen and (max-width: 900px){
+        .top{
+            flex-direction: column;
+        }
+
+        .left{
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .left h1{
+            text-align: center;
+        }
+
+        img{
+            max-width: 100%;
+        }
+    }
 </style>

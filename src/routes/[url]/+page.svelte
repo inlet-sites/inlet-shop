@@ -71,6 +71,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>{vendor.store} | Inlet.Shop</title>
+</svelte:head>
+
 {#if loader}
     <Loader/>
 {/if}

@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-    <title>Inlet Shop</title>
+    <title>Inlet.Shop</title>
 </svelte:head>
 
 {#if loader}

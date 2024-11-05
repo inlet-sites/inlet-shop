@@ -12,10 +12,10 @@
 </script>
 
 <header>
-    <div class="logoContainer">
+    <a href="/" class="logoContainer">
         <img src={logo} alt="inlet.shop logo">
         <h3 class="inletShop">Inlet.Shop</h3>
-    </div>
+    </a>
     <h3><span class="arrow"> > </span> {name}</h3>
 
     <div class="pages">
@@ -54,6 +54,7 @@
         display: flex;
         align-items: center;
         height: 100%;
+        text-decoration: none;
     }
 
     .pages{
