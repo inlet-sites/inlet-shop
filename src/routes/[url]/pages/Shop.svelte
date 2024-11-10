@@ -15,10 +15,11 @@
         for(let i = 0; i < products.length; i++){
             obj["all"].push(products[i]);
             for(let j = 0; j < products[i].tags.length; j++){
-                if(obj[products[i].tags[j]]){
-                    obj[products[i].tags[j]].push(products[i]);
+                let tag = products[i].tags[j].toLowerCase();
+                if(obj[tag]){
+                    obj[tag].push(products[i]);
                 }else{
-                    obj[products[i].tags[j]] = [products[i]];
+                    obj[tag] = [products[i]];
                 }
             }
         }
