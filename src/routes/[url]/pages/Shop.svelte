@@ -26,6 +26,10 @@
     });
     displayProducts = tags.all;
 
+    document.addEventListener("closeProduct", ()=>{
+        singleProduct = null;
+    });
+
     const setActiveTag = (elem)=>{
         for(let i = 0; i < tagElems.children.length; i++){
             tagElems.children[i].classList.remove("active");
@@ -73,11 +77,11 @@
     }
 </script>
 
-
 <div class="Shop" transition:slide>
     {#if singleProduct}
         <Product
             product={singleProduct}
+            on:closeProduct={()=>{singleProduct = null}}
         />
     {/if}
 

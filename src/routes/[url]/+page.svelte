@@ -18,6 +18,10 @@
 
     const changePage = (event)=>{
         page = event.detail.page;
+        if(event.detail.page === "shop"){
+            const event = new CustomEvent("closeProduct");
+            document.dispatchEvent(event);
+        }
     }
 
     const updateLoader = (event)=>{
@@ -99,6 +103,7 @@
 {#if page === "shop"}
     <Shop
         products={products}
+        singleProduct={null}
         on:loader={updateLoader}
         on:notify={notify}
     />
