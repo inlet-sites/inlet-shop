@@ -126,7 +126,6 @@
         display: flex;
         flex-wrap: wrap;
         margin: 15px 0;
-        margin: 15px auto 15px 0;
     }
 
     .tags p{
