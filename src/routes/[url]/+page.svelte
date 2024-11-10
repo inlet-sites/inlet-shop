@@ -24,9 +24,17 @@
         loader = event.detail.on;
     }
 
+    const createNotifier = (type, message)=>{
+        notifier.type = type;
+        notifier.message = message;
+
+        setTimeout(()=>{
+            notifier.type = "";
+        }, 7500);
+    }
+
     const notify = (event)=>{
-        notifier.type = event.detail.type;
-        notifier.message = event.detail.message;
+        createNotifier(event.detail.type, event.detail.message);
     }
 
     onMount(()=>{
@@ -40,8 +48,7 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    notifier.type = "error";
-                    notifier.message = response.message;
+                    createNotifier("error", response.message);
                 }else{
                     vendor = response;
                     return fetch(`${import.meta.env.VITE_API_URL}/product/vendor/${vendor.id}`, {
@@ -55,15 +62,13 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    notifier.type = "error";
-                    notifier.message = response.message
+                    createNotifier("error", response.message);
                 }else{
                     products = response;
                 }
             })
             .catch((err)=>{
-                notifier.type = "erro";
-                notifier.message = "Something went wrong, try refreshing the page"
+                createNotifier("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
                 loader = false;
@@ -79,10 +84,12 @@
     <Loader/>
 {/if}
 
-<Notifier
-    type={notifier.type}
-    message={notifier.message}
-/>
+{#if notifier.type}
+    <Notifier
+        type={notifier.type}
+        message={notifier.message}
+    />
+{/if}
 
 <Header
     name={vendor.store}

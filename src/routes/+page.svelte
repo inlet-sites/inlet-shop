@@ -9,6 +9,15 @@
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
 
+    const notify = (type, message)=>{
+        notifier.type = type;
+        notifier.message = message;
+
+        setTimeout(()=>{
+            notifier.type = "";
+        }, 7500);
+    }
+
     onMount(()=>{
         loader = true;
         fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
@@ -20,15 +29,13 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    notifier.message = response.message;
-                    notifier.type = "error";
+                    notify("error", response.message);
                 }else{
                     vendors = response;
                 }
             })
             .catch((err)=>{
-                notifier.message = "Something went wrong, try refreshing the page";
-                notifier.type = "error";
+                notify("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
                 loader = false;
@@ -39,6 +46,10 @@
 <svelte:head>
     <title>Inlet.Shop</title>
 </svelte:head>
+
+{#if notifier.type}
+    <Notifier type={notifier.type} message={notifier.message}/>
+{/if}
 
 {#if loader}
     <Loader/>
