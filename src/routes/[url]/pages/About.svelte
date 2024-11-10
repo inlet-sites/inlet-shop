@@ -3,6 +3,7 @@
     import {slide} from "svelte/transition";
 
     let {vendor} = $props();
+    let description = $derived(vendor.description ? vendor.description.split("\n") : []);
 </script>
 
 <div class="About" transition:slide>
@@ -18,7 +19,9 @@
         {/if}
     </div>
 
-    <p class="description">{vendor.description}</p>
+    {#each description as d}
+        <p class="description">{d}</p>
+    {/each}
 
     <div class="divider"></div>
 
@@ -98,7 +101,7 @@
         font-size: 18px;
         line-height: 28px;
         max-width: 1200px;
-        margin: 0 auto;
+        margin: 10px auto;
     }
 
     .divider{
