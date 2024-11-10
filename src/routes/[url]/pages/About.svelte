@@ -11,7 +11,11 @@
             <h1>{vendor.store}</h1>
             <h2>{vendor.slogan}</h2>
         </div>
-        <img src="{import.meta.env.VITE_API_URL}/document/{vendor.image}" alt={vendor.name}>
+        {#if vendor.image}
+            <img src="{import.meta.env.VITE_API_URL}/document/{vendor.image}" alt={vendor.name}>
+        {:else}
+            <img src="{import.meta.env.VITE_API_URL}/document/defaultVendorImage.png" alt={vendor.name}>
+        {/if}
     </div>
 
     <p class="description">{vendor.description}</p>
