@@ -67,12 +67,13 @@
 <div class="vendors">
     {#each vendors as vendor}
         <a href="/{vendor.url}" class="vendor">
-            <h2>{vendor.store}</h2>
             {#if vendor.image}
-                <img src="{import.meta.env.VITE_API_URL}/document/{vendor.image}" alt={vendor.name}>
+                <img src="{import.meta.env.VITE_API_URL}/document/{vendor.image}" alt={vendor.store}>
             {:else}
-                <img src="{import.meta.env.VITE_API_URL}/document/defaultVendorImage.png" alt={vendor.name}>
+                <img src="{import.meta.env.VITE_API_URL}/document/defaultVendorImage.png" alt={vendor.store}>
             {/if}
+            <h3>{vendor.store}</h3>
+            <p>{vendor.slogan}</p>
         </a>
     {/each}
 </div>
@@ -118,19 +119,25 @@
         flex-direction: column;
         align-items: center;
         height: 250px;
-        width: 350px;
+        width: 250px;
         border: 1px solid white;
         margin: 25px;
         text-decoration: none;
+        background: white;
+        border-radius: 15px;
+        color: black;
     }
 
-    .vendor h2{
-        color: white;
+    .vendor h3{
+        text-decoration: underline;
+        margin: auto 0;
     }
 
     .vendor img{
-        max-width: 75%;
+        max-width: 100%;
         max-height: 75%;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
     }
 
     @media screen and (max-width: 600px){

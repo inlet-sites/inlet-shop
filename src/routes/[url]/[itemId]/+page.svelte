@@ -1,11 +1,11 @@
 <script>
-    import {createEventDispatcher} from "svelte";
-    import Images from "../components/Images.svelte";
+    import Images from "./Images.svelte";
+    import Header from "./Header.svelte";
 
-    const dispatch = createEventDispatcher();
-    let {product} = $props();
-    let images = $state(false);
+    let {data} = $props();
+    const {product, vendor} = data;
     let clickedImage = $state(0);
+    let images = $state(false);
 
     const showImages = (i)=>{
         clickedImage = i;
@@ -15,24 +15,11 @@
     const closeImages = ()=>{
         images = false;
     }
-
-    const close = ()=>{
-        dispatch("closeProduct");
-    }
 </script>
 
-<div class="Product">
-    <button
-        class="closeProduct"
-        aria-label="close"
-        onclick={close}
-    >
-        <svg width="42px" height="42px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
-            <path d="M9.17218 14.8284L12.0006 12M14.829 9.17157L12.0006 12M12.0006 12L9.17218 9.17157M12.0006 12L14.829 14.8284" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-    </button>
+<Header name={vendor.store} url={vendor.url}/>
 
+<div class="container">
     {#if images}
         <Images
             images={product.images}
@@ -67,25 +54,14 @@
 </div>
 
 <style>
-    .Product{
+    .container{
         display: flex;
         height: 100%;
         width: 100%;
-        position: absolute;
         top: 0;
         left: 0;
-        z-index: 3;
         background: var(--background);
         padding: 35px;
-    }
-
-    .closeProduct{
-        position: absolute;
-        top: 35px;
-        right: 35px;
-        background: none;
-        border: none;
-        cursor: pointer;
     }
 
     .images{
@@ -141,7 +117,7 @@
     }
 
     @media screen and (max-width: 800px){
-        .Product{
+        .container{
             flex-direction: column-reverse;
             align-items: center;
             justify-content: flex-end;

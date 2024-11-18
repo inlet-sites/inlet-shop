@@ -72,6 +72,7 @@
                 }
             })
             .catch((err)=>{
+                console.log(err);
                 createNotifier("error", "Something went wrong, try refreshing the page");
             })
             .finally(()=>{
@@ -103,6 +104,7 @@
 {#if page === "shop"}
     <Shop
         products={products}
+        vendorUrl={vendor.url}
         singleProduct={null}
         on:loader={updateLoader}
         on:notify={notify}

@@ -1,11 +1,9 @@
 <script>
     import {createEventDispatcher} from "svelte";
     import {slide} from "svelte/transition";
-    import Product from "./Product.svelte";
 
     const dispatch = createEventDispatcher();
-    let {products} = $props();
-    let singleProduct = $state(null);
+    let {products, vendorUrl} = $props();
     let selectedTag = $state("all");
     let tagElems = $state();
     let displayProducts = $state();
@@ -27,10 +25,6 @@
     });
     displayProducts = tags.all;
 
-    document.addEventListener("closeProduct", ()=>{
-        singleProduct = null;
-    });
-
     const setActiveTag = (elem)=>{
         for(let i = 0; i < tagElems.children.length; i++){
             tagElems.children[i].classList.remove("active");
@@ -43,49 +37,12 @@
         displayProducts = tags[tag];
     }
 
-    const getSingleProduct = (id)=>{
-        dispatch("loader", {on: true});
-        fetch(`${import.meta.env.VITE_API_URL}/product/${id}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    dispatch("notify", {
-                        type: "error",
-                        message: response.message
-                    });
-                }else{
-                    singleProduct = response;
-                }
-            })
-            .catch((err)=>{
-                dispatch("notify", {
-                    type: "error",
-                    message: "Something went wrong, try refreshing the page"
-                });
-            })
-            .finally(()=>{
-                dispatch("loader", {on: false});
-            });
-    }
-
     const tagSelect = ()=>{
         displayProducts = tags[selectedTag];
     }
 </script>
 
 <div class="Shop" transition:slide>
-    {#if singleProduct}
-        <Product
-            product={singleProduct}
-            on:closeProduct={()=>{singleProduct = null}}
-        />
-    {/if}
-
     <div class="tags" bind:this={tagElems}>
         {#each Object.keys(tags) as tag}
             <button class="tag" onclick={()=>{tagSearch(event, tag)}}>{tag.toUpperCase()}</button>
@@ -104,14 +61,14 @@
 
     <div class="products">
         {#each displayProducts as product}
-            <button class="product" onclick={()=>{getSingleProduct(product.id)}}>
+            <a class="product" href="/{vendorUrl}/{product.id}">
                 <img
                     src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}"
                     alt={product.name}
                 >
                 <h2>{product.name}</h2>
                 <h3>${(product.price / 100).toFixed(2)}</h3>
-            </button>
+            </a>
         {/each}
     </div>
 </div>
@@ -167,10 +124,15 @@
         color: white;
         margin: 25px;
         cursor: pointer;
+        text-decoration: none;
     }
 
     .product img{
         width: 100%;
+    }
+
+    .product h2, .product h3{
+        text-align: center;
     }
 
     @media screen and (max-width: 900px){
