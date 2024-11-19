@@ -33,6 +33,12 @@
 
     header img{
         height: 90%;
+        margin-right: 15px;
+    }
+
+    header h3{
+        font-size: 24px;
+        font-weight: bold;
     }
 
     header p{
@@ -42,6 +48,7 @@
     .vendor{
         text-decoration: none;
         color: var(--text);
+        font-weight: bold;
     }
 
     .logoContainer{

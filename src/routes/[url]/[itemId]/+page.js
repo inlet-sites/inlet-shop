@@ -1,4 +1,4 @@
-export const load = async ({params})=>{
+export const load = async ({fetch, params})=>{
     const promises = [];
     promises.push(fetch(`${import.meta.env.VITE_API_URL}/product/${params.itemId}`, {
         method: "get",

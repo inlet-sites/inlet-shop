@@ -3,7 +3,6 @@
     import Header from "./Header.svelte";
 
     let {data} = $props();
-    const {product, vendor} = data;
     let clickedImage = $state(0);
     let images = $state(false);
 
@@ -17,39 +16,43 @@
     }
 </script>
 
-<Header name={vendor.store} url={vendor.url}/>
+<svelte:head>
+    <title>{data.vendor.store} | Inlet.Shop</title>
+</svelte:head>
+
+<Header name={data.vendor.store} url={data.vendor.url}/>
 
 <div class="container">
     {#if images}
         <Images
-            images={product.images}
+            images={data.product.images}
             idx={clickedImage}
             on:close={closeImages}
         />
     {/if}
 
     <div class="images">
-        {#each product.images as image, i}
+        {#each data.product.images as image, i}
             <button onclick={()=>{showImages(i)}}>
-                <img src="{import.meta.env.VITE_API_URL}/document/{image}" alt="{product.name} #{i+1}">
+                <img src="{import.meta.env.VITE_API_URL}/document/{image}" alt="{data.product.name} #{i+1}">
             </button>
         {/each}
     </div>
 
     <div class="otherDetails">
-        <h1>{product.name}</h1>
-        <h2>${(product.price / 100).toFixed(2)}</h2>
-        {#if product.quantity >= 0}
-            <h3>{product.quantity} available</h3>
+        <h1>{data.product.name}</h1>
+        <h2>${(data.product.price / 100).toFixed(2)}</h2>
+        {#if data.product.quantity >= 0}
+            <h3>{data.product.quantity} available</h3>
         {/if}
 
         <div class="tags">
-            {#each product.tags as tag}
+            {#each data.product.tags as tag}
                 <p>{tag}</p>
             {/each}
         </div>
 
-        <p class="description">{product.description}</p>
+        <p class="description">{data.product.description}</p>
     </div>
 </div>
 

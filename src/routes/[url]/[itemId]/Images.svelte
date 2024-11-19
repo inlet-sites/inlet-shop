@@ -4,7 +4,8 @@
     const dispatch = createEventDispatcher();
     let {images, idx}= $props();
 
-    const close = ()=>{
+    const close = (event)=>{
+        event.stopPropagation();
         dispatch("close");
     }
 
