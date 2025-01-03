@@ -40,6 +40,26 @@
     const tagSelect = ()=>{
         displayProducts = tags[selectedTag];
     }
+
+    const productMaxPrice = (product)=>{
+        let max = product.variations[0].price;
+        for(let i = 1; i < product.variations.length; i++){
+            if(product.variations[i].price > max) max = product.variations[i].price;
+        }
+        return max;
+    }
+
+    const productMinPrice = (product)=>{
+        let min = product.variations[0].price;
+        for(let i = 1; i < product.variations.length; i++){
+            if(product.variations[i].price < min) min = product.variations[i].price;
+        }
+        return min;
+    }
+
+    const formatPrice = (num)=>{
+        return (num / 100).toFixed(2);
+    }
 </script>
 
 <div class="Shop" transition:slide>
@@ -67,7 +87,15 @@
                     alt={product.name}
                 >
                 <h2>{product.name}</h2>
-                <h3>${(product.price / 100).toFixed(2)}</h3>
+                {#if product.variations.length > 1}
+                    <h3>
+                        ${formatPrice(productMinPrice(product))}
+                        -
+                        ${formatPrice(productMaxPrice(product))}
+                    </h3>
+                {:else}
+                    <h3>${formatPrice(product.variations[0].price)}</h3>
+                {/if}
             </a>
         {/each}
     </div>
