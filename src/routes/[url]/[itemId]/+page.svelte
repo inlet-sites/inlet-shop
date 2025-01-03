@@ -5,14 +5,21 @@
     let {data} = $props();
     let clickedImage = $state(0);
     let images = $state(false);
+    let variationIndex = $state(0);
 
     const showImages = (i)=>{
         clickedImage = i;
         images = true;
+        document.body.style.overflow = "hidden";
     }
 
     const closeImages = ()=>{
         images = false;
+        document.body.style.overflow = "initial";
+    }
+
+    const formatPrice = (price)=>{
+        return (price / 100).toFixed(2);
     }
 </script>
 
@@ -25,14 +32,14 @@
 <div class="container">
     {#if images}
         <Images
-            images={data.product.images}
+            images={data.product.variations[variationIndex].images.concat(data.product.images)}
             idx={clickedImage}
             on:close={closeImages}
         />
     {/if}
 
     <div class="images">
-        {#each data.product.images as image, i}
+        {#each data.product.variations[variationIndex].images.concat(data.product.images) as image, i}
             <button onclick={()=>{showImages(i)}}>
                 <img src="{import.meta.env.VITE_API_URL}/document/{image}" alt="{data.product.name} #{i+1}">
             </button>
@@ -41,9 +48,18 @@
 
     <div class="otherDetails">
         <h1>{data.product.name}</h1>
-        <h2>${(data.product.price / 100).toFixed(2)}</h2>
-        {#if data.product.quantity >= 0}
-            <h3>{data.product.quantity} available</h3>
+        {#if data.product.variations.length > 1}
+            <select class="variations" bind:value={variationIndex}>
+                {#each data.product.variations as variation, idx}
+                    <option value={idx}>{variation.descriptor}</option>
+                {/each}
+            </select>
+        {/if}
+        <h2>${formatPrice(data.product.variations[variationIndex].price)}</h2>
+        {#if data.product.variations[variationIndex].quantity === 0}
+            <h3 class="unavailable">Out of stock</h3>
+        {:else if data.product.variations[variationIndex].quantity >= 0}
+            <h3>{data.product.variations[variationIndex].quantity} available</h3>
         {/if}
 
         <div class="tags">
@@ -117,6 +133,19 @@
     .description{
         font-size: 18px;
         line-height: 28px;
+    }
+
+    select{
+        background: none;
+        color: var(--text);
+        border 2px solid var(--text);
+        font-size: 22px;
+        padding: 5px 15px;
+        margin-bottom: 35px;
+    }
+
+    .unavailable{
+        color: red;
     }
 
     @media screen and (max-width: 800px){
