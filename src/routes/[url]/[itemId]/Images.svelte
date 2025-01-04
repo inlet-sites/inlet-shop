@@ -20,7 +20,7 @@
 <div class="Images">
     <button class="close" onclick={close} aria-label="close">
         <svg width="32px" height="32px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
-            <path d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
     </button>
 
@@ -51,7 +51,8 @@
         left: 0;
         height: 100%;
         width: 100%;
-        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(3px);
+        z-index: 2;
     }
 
     .close{
@@ -59,7 +60,7 @@
         position: absolute;
         top: 35px;
         right: 35px;
-        border: 2px solid black;
+        border: 2px solid var(--text);
         background: none;
         border-radius: 50%;
         cursor: pointer;

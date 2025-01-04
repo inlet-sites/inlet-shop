@@ -1,11 +1,22 @@
 <script>
     import Images from "./Images.svelte";
     import Header from "./Header.svelte";
+    import Notifier from "../../../components/Notifier.svelte";
 
     let {data} = $props();
     let clickedImage = $state(0);
     let images = $state(false);
     let variationIndex = $state(0);
+    let buyQuantity = $state(1);
+    let notifier = $state({type: "", message: ""});
+    let totalPrice = $state(0);
+    let totalShipping = $state(0);
+    $effect(()=>{
+        totalPrice = data.product.variations[variationIndex].price * buyQuantity;
+    });
+    $effect(()=>{
+        totalShipping = data.product.variations[variationIndex].shipping * buyQuantity;
+    });
 
     const showImages = (i)=>{
         clickedImage = i;
@@ -21,11 +32,84 @@
     const formatPrice = (price)=>{
         return (price / 100).toFixed(2);
     }
+
+    const itemExists = (item)=>{
+        if(
+            item.product === data.product.id &&
+            item.variation === data.product.variations[variationIndex].id
+        ) return true;
+        return false;
+    }
+
+    const createNotifier = (type, message)=>{
+        notifier.type = type;
+        notifier.message = message;
+
+        setTimeout(()=>{
+            notifier.type = "";
+        }, 7500);
+    }
+
+    const addToCart = ()=>{
+        const quant = data.product.variations[variationIndex].quantity;
+        if(quant === 0){
+            createNotifier("error", "Item not in stock");
+            return;
+        }
+
+        if(data.product.variations[variationIndex].purchaseOption === "list"){
+            createNotifier("error", "Available in-store only");
+            return;
+        }
+
+        if(quant < buyQuantity){
+            createNotifier("error", `Only ${quant} available for this product`);
+            return;
+        }
+
+        let cart = localStorage.getItem("cart");
+        const item = {
+            product: data.product.id,
+            variation: data.product.variations[variationIndex].id,
+            quantity: buyQuantity
+        };
+
+        if(cart){
+            cart = JSON.parse(cart);
+            if(cart[data.vendor.id]){
+                const product = cart[data.vendor.id].find(itemExists);
+                if(product){
+                    product.quantity += buyQuantity
+                }else{
+                    cart[data.vendor.id].push(item);
+                }
+            }else{
+                cart[data.vendor.id] = [item];
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            buyQuantity = 1;
+        }else{
+            const cartObj = {};
+            cartObj[data.vendor.id] = [item];
+            localStorage.setItem("cart", JSON.stringify(cartObj));
+            buyQuantity = 1;
+        }
+
+        createNotifier("success", "Item added to cart");
+    }
 </script>
 
 <svelte:head>
     <title>{data.vendor.store} | Inlet.Shop</title>
 </svelte:head>
+
+{#if notifier.type}
+    <Notifier
+        type={notifier.type}
+        message={notifier.message}
+    />
+{/if}
 
 <Header name={data.vendor.store} url={data.vendor.url}/>
 
@@ -70,6 +154,24 @@
 
         <p class="description">{data.product.description}</p>
     </div>
+
+    <div class="purchase">
+        <h3>Purchase</h3>
+        <p>Price: ${formatPrice(data.product.variations[variationIndex].price)}</p>
+        <p>Shipping: ${formatPrice(data.product.variations[variationIndex].shipping)}</p>
+
+        <h4>Quantity</h4>
+        <input type="number" min="1" step="1" bind:value={buyQuantity}>
+
+        <p>Total: ${formatPrice(totalPrice)}</p>
+        <p>Total shipping: ${formatPrice(totalShipping)}</p>
+        <p>Grand Total: ${formatPrice(totalPrice + totalShipping)}</p>
+
+        <button
+            class="button"
+            onclick={addToCart}
+        >Add To Cart</button>
+    </div>
 </div>
 
 <style>
@@ -77,8 +179,6 @@
         display: flex;
         height: 100%;
         width: 100%;
-        top: 0;
-        left: 0;
         background: var(--background);
         padding: 35px;
     }
@@ -86,9 +186,13 @@
     .images{
         display: flex;
         flex-direction: column;
-        width: 250px;
-        max-height: 90%;
+        width: 25%;
+        height: 80vh;
         overflow-y: auto;
+        margin: auto 0;
+        padding: 15px;
+        border: 1px solid rgba(255, 0, 0, 0.35);
+        border-radius: 5px;
     }
 
     .images button{
@@ -96,8 +200,7 @@
         background: none;
         border: 1px solid white;
         cursor: pointer;
-        margin: 25px 0;
-        margin: 25px 5px 0 25px;
+        margin: 5px 0;
     }
 
     .images button:first-of-type{
@@ -136,8 +239,6 @@
     }
 
     select{
-        background: none;
-        color: var(--text);
         border 2px solid var(--text);
         font-size: 22px;
         padding: 5px 15px;
@@ -146,6 +247,37 @@
 
     .unavailable{
         color: red;
+    }
+
+    .purchase{
+        color: var(--text);
+        border: 1px solid rgb(255, 0, 0, 0.35);
+        padding: 15px;
+        border-radius: 15px;
+        width: 25%;
+        position: relative;
+    }
+
+    .purchase h3{
+        text-decoration: underline;
+        margin-bottom: 15px;
+    }
+
+    .purchase h4{
+        text-decoration: underline;
+        margin-top: 15px;
+    }
+
+    .purchase input{
+        margin-bottom: 35px;
+    }
+
+    .purchase button{
+        position: absolute;
+        bottom: 35px;
+        left: calc(50% - 75px);
+        width: 150px;
+        font-size: 18px;
     }
 
     @media screen and (max-width: 800px){
