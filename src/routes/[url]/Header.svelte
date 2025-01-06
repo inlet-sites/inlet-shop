@@ -3,7 +3,6 @@
     import logo from "$lib/logo.png";
 
     const dispatch = createEventDispatcher();
-
     let {name} = $props();
 
     const changePage = (page)=>{

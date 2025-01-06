@@ -50,6 +50,13 @@
         }, 7500);
     }
 
+    const validateQuantity = ()=>{
+        if(!Number.isInteger){
+            createNotifier("error", "Invalid quantity");
+            buyQuantity = 1;
+        }
+    }
+
     const addToCart = ()=>{
         const quant = data.product.variations[variationIndex].quantity;
         if(quant === 0){
@@ -155,23 +162,28 @@
         <p class="description">{data.product.description}</p>
     </div>
 
-    <div class="purchase">
-        <h3>Purchase</h3>
-        <p>Price: ${formatPrice(data.product.variations[variationIndex].price)}</p>
-        <p>Shipping: ${formatPrice(data.product.variations[variationIndex].shipping)}</p>
+    {#if data.product.variations[variationIndex].purchaseOption !== "list"}
+        <div class="purchase">
+            <h3>Purchase</h3>
+            <p>Price: ${formatPrice(data.product.variations[variationIndex].price)}</p>
+            <p>Shipping: ${formatPrice(data.product.variations[variationIndex].shipping)}</p>
 
-        <h4>Quantity</h4>
-        <input type="number" min="1" step="1" bind:value={buyQuantity}>
+            <h4>Quantity</h4>
+            <select bind:value={buyQuantity}>
+                
+            </select>
+            <input type="number" oninput={validateQuantity} bind:value={buyQuantity}>
 
-        <p>Total: ${formatPrice(totalPrice)}</p>
-        <p>Total shipping: ${formatPrice(totalShipping)}</p>
-        <p>Grand Total: ${formatPrice(totalPrice + totalShipping)}</p>
+            <p>Total: ${formatPrice(totalPrice)}</p>
+            <p>Total shipping: ${formatPrice(totalShipping)}</p>
+            <p>Grand Total: ${formatPrice(totalPrice + totalShipping)}</p>
 
-        <button
-            class="button"
-            onclick={addToCart}
-        >Add To Cart</button>
-    </div>
+            <button
+                class="button"
+                onclick={addToCart}
+            >Add To Cart</button>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -270,6 +282,8 @@
 
     .purchase input{
         margin-bottom: 35px;
+        font-size: 22px;
+        max-width: 100px;
     }
 
     .purchase button{
