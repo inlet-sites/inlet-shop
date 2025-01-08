@@ -11,6 +11,14 @@
     let notifier = $state({type: "", message: ""});
     let totalPrice = $state(0);
     let totalShipping = $state(0);
+    let maxQuantity = $state(0);
+    $effect(()=>{
+        if(data.product.variations[variationIndex].quantity > 20){
+            maxQuantity = 20;
+        }else{
+            maxQuantity = data.product.variations[variationIndex].quantity
+        }
+    });
     $effect(()=>{
         totalPrice = data.product.variations[variationIndex].price * buyQuantity;
     });
@@ -179,9 +187,16 @@
 
             <h4>Quantity</h4>
             <select bind:value={buyQuantity}>
-                
+                {#each Array.from({length: maxQuantity}) as _, i}
+                    <option value={i+1}>{i + 1}</option>
+                {/each}
+                {#if maxQuantity === 0}
+                    <option
+                        disabled
+                        value={buyQuantity}
+                    >Out of stock</option>
+                {/if}
             </select>
-            <input type="number" oninput={validateQuantity} bind:value={buyQuantity}>
 
             <p>Total: ${formatPrice(totalPrice)}</p>
             <p>Total shipping: ${formatPrice(totalShipping)}</p>
