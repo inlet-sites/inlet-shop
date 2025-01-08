@@ -66,8 +66,7 @@
     }
 
     const changePage = (event)=>{
-        console.log("change page");
-        console.log(event);
+        window.location.href = `/${data.vendor.url}`;
     }
 
     const addToCart = ()=>{

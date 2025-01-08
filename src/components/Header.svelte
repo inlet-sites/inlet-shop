@@ -6,7 +6,6 @@
     let {storeUrl, storeName, home} = $props();
 
     const changePage = (page)=>{
-        console.log(page);
         dispatch("changePage", {page: page});
     }
 </script>
