@@ -4,6 +4,7 @@
     import logo from "$lib/logo.png";
     import Loader from "../components/Loader.svelte";
     import Notifier from "../components/Notifier.svelte";
+    import Header from "../components/Header.svelte";
 
     let vendors = $state([]);
     let loader = $state(false);
@@ -55,14 +56,7 @@
     <Loader/>
 {/if}
 
-<header>
-    <div class="logoContainer">
-        <img src={logo} alt="Inlet Shop logo">
-        <h2>Inlet.Shop</h2>
-    </div>
-
-    <a href="https://vendor.inlet.shop">Become a Vendor</a>
-</header>
+<Header home={true}/>
 
 <div class="vendors">
     {#each vendors as vendor}
@@ -79,35 +73,6 @@
 </div>
 
 <style>
-    header{
-        display: flex;
-        align-items: center;
-        height: 100px;
-        width: 100vw;
-        padding-left: 35px;
-    }
-
-    .logoContainer{
-        display: flex;
-        align-items: center;
-        height: 100%;
-    }
-
-    header img{
-        height: 75%;
-        margin-right: 15px;
-    }
-
-    header h2{
-        color: var(--text);
-        font-size: 38px;
-    }
-
-    header a{
-        margin: 0 35px 0 auto;
-        color: var(--text);
-    }
-
     .vendors{
         display: flex;
         flex-wrap: wrap;

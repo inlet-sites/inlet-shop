@@ -5,7 +5,7 @@
     import logo from "$lib/logo.png";
     import Loader from "../../components/Loader.svelte";
     import Notifier from "../../components/Notifier.svelte";
-    import Header from "./Header.svelte";
+    import Header from "../../components/Header.svelte";
     import Shop from "./pages/Shop.svelte";
     import About from "./pages/About.svelte";
 
@@ -56,7 +56,8 @@
 {/if}
 
 <Header
-    name={data.vendor.store}
+    storeUrl={data.vendor.url}
+    storeName={data.vendor.store}
     on:changePage={changePage}
 />
 

@@ -1,7 +1,7 @@
 <script>
     import Images from "./Images.svelte";
-    import Header from "./Header.svelte";
     import Notifier from "../../../components/Notifier.svelte";
+    import Header from "../../../components/Header.svelte";
 
     let {data} = $props();
     let clickedImage = $state(0);
@@ -118,7 +118,10 @@
     />
 {/if}
 
-<Header name={data.vendor.store} url={data.vendor.url}/>
+<Header
+    storeUrl={data.vendor.store}
+    storeName={data.vendor.url}
+/>
 
 <div class="container">
     {#if images}
