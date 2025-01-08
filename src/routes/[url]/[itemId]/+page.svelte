@@ -57,6 +57,11 @@
         }
     }
 
+    const changePage = (event)=>{
+        console.log("change page");
+        console.log(event);
+    }
+
     const addToCart = ()=>{
         const quant = data.product.variations[variationIndex].quantity;
         if(quant === 0){
@@ -121,6 +126,7 @@
 <Header
     storeUrl={data.vendor.store}
     storeName={data.vendor.url}
+    on:changePage={changePage}
 />
 
 <div class="container">
@@ -297,31 +303,46 @@
         font-size: 18px;
     }
 
-    @media screen and (max-width: 800px){
+    @media screen and (max-width: 1100px){
         .container{
-            flex-direction: column-reverse;
+            flex-direction: column;
             align-items: center;
-            justify-content: flex-end;
-            padding: 15px 0 0 0;
-        }
-
-        .otherDetails{
-            width: 100%;
-            padding: 25px;
         }
 
         .images{
             flex-direction: row;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            width: 100%;
-            overflow-y: initial;
-            margin-top: 35px;
-            max-height: initial;
+            align-items: center;
+            height: 150px;
+            width: initial;
+            max-width: 100%;
+            overflow-x: auto;
         }
 
         .images button{
-            width: 250px;
+            height: 100%;
+            margin: 0 15px;
         }
+
+        .images img{
+            width: initial;
+        }
+
+        .otherDetails{
+            width: 100%;
+        }
+
+        .purchase{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .purchase button{
+            margin-top: 15px;
+            position: static;
+        }
+    }
+
+    @media screen and (max-width: 500px){
     }
 </style>
