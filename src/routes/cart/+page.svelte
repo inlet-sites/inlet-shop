@@ -4,11 +4,9 @@
     import Notifier from "../../components/Notifier.svelte";
     import Loader from "../../components/Loader.svelte";
 
-    let cart = $state();
     let currentVendor = $state(0);
     let notifier = $state({type: "", message: ""});
     let loader = $state(false);
-    $inspect(cart);
 
     const createNotifier = (type, message)=>{
         notifier.type = type;
@@ -19,44 +17,25 @@
         }, 7500);
     }
 
-    const getCart = ()=>{
+    const getCart = async ()=>{
         loader = true;
         const cartObj = localStorage.getItem("cart");
         if(!cartObj){
-            cart = [];
-            return;
+            return [];
         }
 
-
-        fetch(`${import.meta.env.VITE_API_URL}/cart`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
             },
             body: cartObj
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    createNotifier("error", response.error.message);
-                }else{
-                    cart = response;
-                    console.log(cart);
-                    console.log(cart[0]);
-                }
-            })
-            .catch((err)=>{
-                createNotifier(
-                    "error",
-                    "Something went wrong, try refreshing the page"
-                );
-            })
-            .finally(()=>{
-                loader = false;
-            });
+        });
+        const cart = await response.json();
+        loader = false;
+        return cart;
     }
-
-    onMount(getCart);
+    let cart = getCart();
 </script>
 
 {#if notifier.type}
@@ -73,17 +52,23 @@
 <div class="container">
     <h1>Your Cart</h1>
 
-    <select bind:value={currentVendor}>
-        {#each cart as vendor, i}
-            <option value={i}>{vendor.store}</option>
-        {/each}
-    </select>
 
-    <div class="cart">
-        {#each cart[currentVendor].items as item}
-            <p>{item.product.name}</p>
+    {#await cart}
+        <p>Loading...</p>
+    {:then data}
+        <select bind:value={currentVendor}>
+            {#each data as vendor, i}
+                <option value={i}>{vendor.store}</option>
+            {/each}
+        </select>
+
+        {#each data[currentVendor].items as item}
+            <div class="item">
+                <p>{console.log(item)}</p>
+                <h2>{item.product.name}</h2>
+            </div>
         {/each}
-    </div>
+    {/await}
 </div>
 
 <style>
