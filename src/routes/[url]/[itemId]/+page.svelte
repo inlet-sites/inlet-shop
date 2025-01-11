@@ -131,8 +131,8 @@
 {/if}
 
 <Header
-    storeUrl={data.vendor.store}
-    storeName={data.vendor.url}
+    storeUrl={data.vendor.url}
+    storeName={data.vendor.store}
     on:changePage={changePage}
 />
 
