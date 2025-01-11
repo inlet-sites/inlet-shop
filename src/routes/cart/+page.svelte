@@ -9,7 +9,6 @@
     let notifier = $state({type: "", message: ""});
     let loader = $state(false);
     let vendors = $state([]);
-    $inspect(vendors);
 
     const createNotifier = (type, message)=>{
         notifier.type = type;
@@ -77,6 +76,17 @@
         createNotifier("success", "Your cart has been emptied");
     }
 
+    const removeVendor = ()=>{
+        const name = vendors[currentVendor].store;
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        cart[vendors[currentVendor]._id] = undefined;
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        vendors.splice(currentVendor, 1);
+        currentVendor = 0;
+        createNotifier("success", `All items for ${name} removed from cart`);
+    }
+
     onMount(getCart);
 </script>
 
@@ -96,11 +106,18 @@
 />
 <div class="container">
     {#if vendors[0]}
-        <select class="vendorSelect" bind:value={currentVendor}>
-            {#each vendors as vendor, i}
-                <option value={i}>{vendor.store}</option>
-            {/each}
-        </select>
+        <div class="vendorOption">
+            <select class="vendorSelect" bind:value={currentVendor}>
+                {#each vendors as vendor, i}
+                    <option value={i}>{vendor.store}</option>
+                {/each}
+            </select>
+
+            <button
+                class="button clearCart"
+                onclick={removeVendor}
+            >Remove All Items</button>
+        </div>
 
         <div class="items">
             {#each vendors[currentVendor].items as item}
