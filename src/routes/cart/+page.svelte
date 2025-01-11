@@ -8,6 +8,8 @@
     let currentVendor = $state(0);
     let notifier = $state({type: "", message: ""});
     let loader = $state(false);
+    let vendors = $state([]);
+    $inspect(vendors);
 
     const createNotifier = (type, message)=>{
         notifier.type = type;
@@ -19,24 +21,32 @@
     }
 
     const getCart = async ()=>{
-        loader = true;
         const cartObj = localStorage.getItem("cart");
-        if(!cartObj){
-            return [];
-        }
+        if(!cartObj) return;
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
+        loader = true;
+        fetch(`${import.meta.env.VITE_API_URL}/cart`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
             },
             body: cartObj
-        });
-        const cart = await response.json();
-        loader = false;
-        return cart;
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    createNotifier("error", response.error.message);
+                }else{
+                    vendors = response;
+                }
+            })
+            .catch((err)=>{
+                createNotifier("error", "Something went wrong, try refreshing the page");
+            })
+            .finally(()=>{
+                loader = false;
+            });
     }
-    let cart = getCart();
 
     const getImage = (item)=>{
         if(item.variation.images.length > 0){
@@ -49,10 +59,10 @@
         return `$${(price / 100).toFixed(2)}`;
     }
 
-    const grandTotal = (cart)=>{
+    const grandTotal = (vendor)=>{
         let total = 0;
-        for(let i = 0; i < cart.items.length; i++){
-            total += (cart.items[i].variation.price + cart.items[i].variation.shipping) * cart.items[i].quantity;
+        for(let i = 0; i < vendor.items.length; i++){
+            total += (vendor.items[i].variation.price + vendor.items[i].variation.shipping) * vendor.items[i].quantity;
         }
         return formatPrice(total);
     }
@@ -60,6 +70,14 @@
     const checkout = ()=>{
         console.log("checking out");
     }
+
+    const clearFullCart = ()=>{
+        localStorage.removeItem("cart");
+        vendors = [];
+        createNotifier("success", "Your cart has been emptied");
+    }
+
+    onMount(getCart);
 </script>
 
 {#if notifier.type}
@@ -69,26 +87,28 @@
     />
 {/if}
 
+{#if loader}
+    <Loader/>
+{/if}
+
 <Header
     cart={true}
 />
 <div class="container">
-    {#await cart}
-        <Loader/>
-    {:then data}
+    {#if vendors[0]}
         <select class="vendorSelect" bind:value={currentVendor}>
-            {#each data as vendor, i}
+            {#each vendors as vendor, i}
                 <option value={i}>{vendor.store}</option>
             {/each}
         </select>
 
         <div class="items">
-            {#each data[currentVendor].items as item}
+            {#each vendors[currentVendor].items as item}
                 <div class="item">
                     <img src={getImage(item)} alt="*product*">
                     <div class="itemInfo">
                         <h2>{item.product.name}</h2>
-                        <h3>{data[currentVendor].store}</h3>
+                        <h3>{vendors[currentVendor].store}</h3>
                         {#if item.variation.descriptor !== item.product.name}
                             <p>{item.variation.descriptor}</p>
                         {/if}
@@ -104,21 +124,31 @@
                 </div>
             {/each}
             <div class="grandTotal">
-                <h1>{grandTotal(data[currentVendor])}</h1>
+                <h1>{grandTotal(vendors[currentVendor])}</h1>
             </div>
         </div>
 
-        {#if data[currentVendor].items.length > 0}
+        {#if vendors[currentVendor].items.length > 0}
             <div class="checkout">
-                <h1>{grandTotal(data[currentVendor])}</h1>
+                <h1>{grandTotal(vendors[currentVendor])}</h1>
 
                 <button
                     class="button"
                     onclick={checkout}
                 >Checkout</button>
+
+                <button
+                    class="button clearCart"
+                    onclick={clearFullCart}
+                >Empty Cart</button>
             </div>
         {/if}
-    {/await}
+    {:else}
+        <div class="emptyCart">
+            <h1>Your Cart is Empty</h1>
+            <a href="/">Continue Shopping</a>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -175,6 +205,21 @@
     }
 
     .checkout button{
+        margin-top: 35px;
+    }
+
+    .emptyCart{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .emptyCart a{
+        color: white;
+        font-size: 22px;
         margin-top: 35px;
     }
 </style>
