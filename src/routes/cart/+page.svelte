@@ -3,6 +3,7 @@
     import "../../global.css";
     import Notifier from "../../components/Notifier.svelte";
     import Loader from "../../components/Loader.svelte";
+    import Header from "../../components/Header.svelte";
 
     let currentVendor = $state(0);
     let notifier = $state({type: "", message: ""});
@@ -36,6 +37,29 @@
         return cart;
     }
     let cart = getCart();
+
+    const getImage = (item)=>{
+        if(item.variation.images.length > 0){
+            return `${import.meta.env.VITE_API_URL}/document/${item.variation.images[0]}`;
+        }
+        return `${import.meta.env.VITE_API_URL}/document/${item.product.images[0]}`;
+    }
+
+    const formatPrice = (price)=>{
+        return `$${(price / 100).toFixed(2)}`;
+    }
+
+    const grandTotal = (cart)=>{
+        let total = 0;
+        for(let i = 0; i < cart.items.length; i++){
+            total += (cart.items[i].variation.price + cart.items[i].variation.shipping) * cart.items[i].quantity;
+        }
+        return formatPrice(total);
+    }
+
+    const checkout = ()=>{
+        console.log("checking out");
+    }
 </script>
 
 {#if notifier.type}
@@ -45,34 +69,112 @@
     />
 {/if}
 
-{#if loader}
-    <Loader/>
-{/if}
-
+<Header
+    cart={true}
+/>
 <div class="container">
-    <h1>Your Cart</h1>
-
-
     {#await cart}
-        <p>Loading...</p>
+        <Loader/>
     {:then data}
-        <select bind:value={currentVendor}>
+        <select class="vendorSelect" bind:value={currentVendor}>
             {#each data as vendor, i}
                 <option value={i}>{vendor.store}</option>
             {/each}
         </select>
 
-        {#each data[currentVendor].items as item}
-            <div class="item">
-                <p>{console.log(item)}</p>
-                <h2>{item.product.name}</h2>
+        <div class="items">
+            {#each data[currentVendor].items as item}
+                <div class="item">
+                    <img src={getImage(item)} alt="*product*">
+                    <div class="itemInfo">
+                        <h2>{item.product.name}</h2>
+                        <h3>{data[currentVendor].store}</h3>
+                        {#if item.variation.descriptor !== item.product.name}
+                            <p>{item.variation.descriptor}</p>
+                        {/if}
+                        <p>Price: {formatPrice(item.variation.price)}</p>
+                        <p>Quantity: {item.quantity}</p>
+                    </div>
+
+                    <div class="cost">
+                        <p>Total: {formatPrice(item.variation.price * item.quantity)}</p>
+                        <p class="shipping">Shipping: {formatPrice(item.variation.shipping * item.quantity)}</p>
+                        <h1>{formatPrice((item.variation.price + item.variation.shipping) * item.quantity)}</h1>
+                    </div>
+                </div>
+            {/each}
+            <div class="grandTotal">
+                <h1>{grandTotal(data[currentVendor])}</h1>
             </div>
-        {/each}
+        </div>
+
+        {#if data[currentVendor].items.length > 0}
+            <div class="checkout">
+                <h1>{grandTotal(data[currentVendor])}</h1>
+
+                <button
+                    class="button"
+                    onclick={checkout}
+                >Checkout</button>
+            </div>
+        {/if}
     {/await}
 </div>
 
 <style>
     .container{
         color: var(--text);
+        padding: 35px;
+    }
+
+    .item{
+        display: flex;
+        border: 1px solid var(--text);
+        width: 750px;
+        height: 150px;
+        padding: 10px;
+    }
+
+    .itemInfo{
+        margin-left: 15px;
+    }
+
+    .vendorSelect{
+        background: none;
+        border: 1px solid var(--text);
+        font-size: 35px;
+        color: var(--text);
+        margin-bottom: 35px;
+        padding: 5px 15px;
+    }
+
+    .cost{
+        margin-left: auto;
+    }
+
+    .shipping{
+        border-bottom: 1px solid var(--text);
+    }
+
+    .grandTotal{
+        display: flex;
+        justify-content: flex-end;
+        width: 750px;
+        font-size: 28px;
+    }
+
+    .checkout{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        top: 75px;
+        right: 35px;
+        border: 1px solid var(--text);
+        padding: 15px;
+    }
+
+    .checkout button{
+        margin-top: 35px;
     }
 </style>
