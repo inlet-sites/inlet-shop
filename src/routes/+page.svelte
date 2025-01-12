@@ -104,16 +104,4 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
     }
-
-    @media screen and (max-width: 600px){
-        header{
-            flex-direction: column;
-            padding: 0;
-            margin-bottom: 35px;
-        }
-
-        header a{
-            margin: 0;
-        }
-    }
 </style>
