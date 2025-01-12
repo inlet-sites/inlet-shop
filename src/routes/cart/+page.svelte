@@ -4,6 +4,7 @@
     import Notifier from "../../components/Notifier.svelte";
     import Loader from "../../components/Loader.svelte";
     import Header from "../../components/Header.svelte";
+    import CartItem from "../../components/CartItem.svelte";
 
     let currentVendor = $state(0);
     let notifier = $state({type: "", message: ""});
@@ -47,23 +48,12 @@
             });
     }
 
-    const getImage = (item)=>{
-        if(item.variation.images.length > 0){
-            return `${import.meta.env.VITE_API_URL}/document/${item.variation.images[0]}`;
-        }
-        return `${import.meta.env.VITE_API_URL}/document/${item.product.images[0]}`;
-    }
-
-    const formatPrice = (price)=>{
-        return `$${(price / 100).toFixed(2)}`;
-    }
-
     const grandTotal = (vendor)=>{
         let total = 0;
         for(let i = 0; i < vendor.items.length; i++){
             total += (vendor.items[i].variation.price + vendor.items[i].variation.shipping) * vendor.items[i].quantity;
         }
-        return formatPrice(total);
+        return `$${(total / 100).toFixed(2)}`;
     }
 
     const checkout = ()=>{
@@ -87,7 +77,8 @@
         createNotifier("success", `All items for ${name} removed from cart`);
     }
 
-    const removeItem = (item)=>{
+    const removeItem = (event)=>{
+        const item = event.detail.item;
         let idx = vendors[currentVendor].items.indexOf(item);
         vendors[currentVendor].items.splice(idx, 1);
         vendors[currentVendor].cart.splice(idx, 1);
@@ -96,9 +87,25 @@
         const vendor = storageCart[vendors[currentVendor]._id];
         const itemIdx = vendor.findIndex(i => i.product === item.product._id && i.variation === item.variation._id);
         vendor.splice(itemIdx, 1);
-        localStorage.setItem("cart", JSON.stringify(storageCart));
+        saveCart(storageCart);
+        if(vendors[currentVendor].items.length === 0){
+            vendors.splice(currentVendor, 1);
+        }
 
         createNotifier("success", `${item.product.name} removed from your cart`);
+    }
+
+    const saveCart = (cart)=>{
+        const vendors = Object.keys(cart);
+        for(let i = 0; i < vendors.length; i++){
+            if(cart[vendors[i]].length === 0) cart[vendors[i]] = undefined;
+        }
+
+        if(Object.keys(cart).length === 0){
+            localStorage.removeItem("cart");
+        }else{
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
     }
 
     onMount(getCart);
@@ -139,35 +146,11 @@
 
         <div class="items">
             {#each vendors[currentVendor].items as item}
-                <div class="item">
-                    <img src={getImage(item)} alt="*product*">
-                    <div class="itemInfo">
-                        <h2>{item.product.name}</h2>
-                        <h3>{vendors[currentVendor].store}</h3>
-                        {#if item.variation.descriptor !== item.product.name}
-                            <p>{item.variation.descriptor}</p>
-                        {/if}
-                        <p>Price: {formatPrice(item.variation.price)}</p>
-                        <p>Quantity: {item.quantity}</p>
-                    </div>
-
-                    <div class="cost">
-                        <p>Total: {formatPrice(item.variation.price * item.quantity)}</p>
-                        <p class="shipping">Shipping: {formatPrice(item.variation.shipping * item.quantity)}</p>
-                        <h1>{formatPrice((item.variation.price + item.variation.shipping) * item.quantity)}</h1>
-                    </div>
-
-                    <button 
-                        aria-label="remove"
-                        class="button removeItemBtn"
-                        onclick={()=>{removeItem(item)}}
-                    >
-                        <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000">
-                            <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                    </button>
-                </div>
+                <CartItem
+                    item={item}
+                    vendor={vendors[currentVendor].store}
+                    on:removeItem={removeItem}
+                />
             {/each}
             <div class="grandTotal">
                 <h1>{grandTotal(vendors[currentVendor])}</h1>
@@ -203,18 +186,6 @@
         padding: 35px;
     }
 
-    .item{
-        display: flex;
-        border: 1px solid var(--text);
-        width: 750px;
-        height: 150px;
-        padding: 10px;
-    }
-
-    .itemInfo{
-        margin-left: 15px;
-    }
-
     .vendorSelect{
         background: none;
         border: 1px solid var(--text);
@@ -222,14 +193,6 @@
         color: var(--text);
         margin-bottom: 35px;
         padding: 5px 15px;
-    }
-
-    .cost{
-        margin: 0 35px 0 auto;
-    }
-
-    .shipping{
-        border-bottom: 1px solid var(--text);
     }
 
     .grandTotal{
@@ -267,11 +230,6 @@
         color: white;
         font-size: 22px;
         margin-top: 35px;
-    }
-
-    .removeItemBtn{
-        background: none;
-        border: none;
     }
 
     .clearCart{
