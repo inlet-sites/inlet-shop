@@ -104,6 +104,10 @@
     onMount(getCart);
 </script>
 
+<svelte:head>
+    <title>My Cart | Inlet.Shop</title>
+</svelte:head>
+
 {#if notifier.type}
     <Notifier
         type={notifier.type}
