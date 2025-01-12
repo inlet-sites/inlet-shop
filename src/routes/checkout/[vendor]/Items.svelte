@@ -1,5 +1,6 @@
 <script>
     import {onMount, createEventDispatcher} from "svelte";
+    import CartItem from "../../../components/CartItem.svelte";
 
     const dispatch = createEventDispatcher();
     let {vendorId} = $props();
@@ -39,12 +40,25 @@
 
 <div class="Items">
     <h1>Cart Items</h1>
+
+    {#each vendor.items as item}
+        <CartItem
+            item={item}
+            vendor={vendor.store}
+            edit={false}
+        />
+    {/each}
 </div>
 
 <style>
     .Items{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         flex-basis: 50%;
         flex-grow: 1;
+        height: 100%;
         border-right: 1px solid white;
         color: var(--text);
     }
