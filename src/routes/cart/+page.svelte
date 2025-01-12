@@ -269,4 +269,9 @@
         background: none;
         border: none;
     }
+
+    .clearCart{
+        background: red;
+        color: var(--text);
+    }
 </style>
