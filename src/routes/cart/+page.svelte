@@ -185,6 +185,13 @@
     .container{
         color: var(--text);
         padding: 35px;
+        width: 100vw;
+    }
+
+    .vendorOption{
+        display: flex;
+        align-items: center;
+        margin-bottom: 35px;
     }
 
     .vendorSelect{
@@ -192,14 +199,21 @@
         border: 1px solid var(--text);
         font-size: 35px;
         color: var(--text);
-        margin-bottom: 35px;
+        margin-right: 35px;
         padding: 5px 15px;
+    }
+
+    .items{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 
     .grandTotal{
         display: flex;
         justify-content: flex-end;
-        width: 750px;
+        width: 100%;
+        max-width: 750px;
         font-size: 28px;
     }
 
@@ -216,6 +230,7 @@
 
     .checkout button{
         margin-top: 35px;
+        width: 100%;
     }
 
     .emptyCart{
@@ -236,5 +251,37 @@
     .clearCart{
         background: red;
         color: var(--text);
+    }
+
+    @media screen and (max-width: 1100px){
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .items{
+            align-items: center;
+        }
+
+        .checkout{
+            position: static;
+            margin-top: 35px;
+        }
+    }
+
+    @media screen and (max-width: 650px){
+        .vendorOption{
+            flex-direction: column;
+        }
+
+        .vendorSelect{
+            margin: 0 0 15px 0;
+            margin-right: 0;
+        }
+
+        .vendorOption button{
+            font-size: 22px;
+        }
     }
 </style>

@@ -21,7 +21,7 @@
 </script>
 
 <div class="CartItem">
-    <img src={getImage(item)} alt="*product*">
+    <img class="itemImage" src={getImage(item)} alt="*product*">
     <div class="itemInfo">
         <h2>{item.product.name}</h2>
         <h3>{vendor}</h3>
@@ -60,6 +60,11 @@
         max-width: 750px;
         height: 150px;
         padding: 10px;
+        position: relative;
+    }
+
+    .itemImage{
+        border: 1px solid var(--text);
     }
 
     .itemInfo{
@@ -77,5 +82,37 @@
     .removeItemBtn{
         background: none;
         border: none;
+    }
+
+    @media screen and (max-width: 800px){
+        .CartItem{
+            flex-direction: column;
+            align-items: flex-start;
+            height: initial;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 0, 0, 0.35);
+        }
+
+        .itemImage{
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 10px;
+        }
+
+        .itemInfo{
+            margin: 25px 0;
+        }
+
+        .cost{
+            margin: 0;
+        }
+
+        .removeItemBtn{
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            z-index: 2;
+        }
     }
 </style>
