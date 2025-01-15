@@ -71,4 +71,10 @@
         color: var(--text);
         padding: 35px;
     }
+
+    @media screen and (max-width: 800px){
+        .Items{
+            height: initial;
+        }
+    }
 </style>

@@ -112,4 +112,11 @@
         height: 100vh;
         width: 100vw;
     }
+
+    @media screen and (max-width: 1200px){
+        .container{
+            flex-direction: column-reverse;
+            height: initial;
+        }
+    }
 </style>
