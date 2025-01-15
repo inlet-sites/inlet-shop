@@ -5,7 +5,6 @@
     const dispatch = createEventDispatcher();
     let {vendorId} = $props();
     let vendor = $state({});
-    $inspect(vendor);
 
     const getCart = ()=>{
         dispatch("loader", {on: true});
@@ -39,7 +38,7 @@
 </script>
 
 <div class="Items">
-    <h1>Cart Items</h1>
+    <h1>Your Items</h1>
 
     {#each vendor.items as item}
         <CartItem
@@ -57,9 +56,10 @@
         justify-content: center;
         align-items: center;
         flex-basis: 50%;
-        flex-grow: 1;
+        flex-grow: 0;
         height: 100%;
         border-right: 1px solid white;
         color: var(--text);
+        padding: 35px;
     }
 </style>

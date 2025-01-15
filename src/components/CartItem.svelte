@@ -56,8 +56,8 @@
     .CartItem{
         display: flex;
         border: 1px solid var(--text);
-        width: 750px;
-        max-width: 100%;
+        width: 100%;
+        max-width: 750px;
         height: 150px;
         padding: 10px;
     }

@@ -3,7 +3,6 @@
 
     const dispatch = createEventDispatcher();
     let {images, idx}= $props();
-    $inspect(images);
 
     const close = (event)=>{
         event.stopPropagation();
