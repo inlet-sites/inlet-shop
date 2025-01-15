@@ -9,7 +9,6 @@
 
     const submit = ()=>{
         if(email !== confirmEmail){
-            console.log("something");
             dispatch("notify", {
                 type: "error",
                 message: "Emails do not match"

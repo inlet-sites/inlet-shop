@@ -4,12 +4,14 @@
     import Notifier from "../../../components/Notifier.svelte";
     import Items from "./Items.svelte";
     import CustomerInfo from "./CustomerInfo.svelte";
+    import StripeCheckout from "./StripeCheckout.svelte";
 
-    let {data} = $props(); //data.vendorId
+    let {data} = $props();
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
     let checkoutStage = $state("customerInfo");
     let orderData = $state();
+    let stripeData = $state();
 
     const setLoader = (event)=>{
         loader = event.detail.on;
@@ -48,7 +50,8 @@
                         }
                     });
                 }else{
-                    console.log(response);
+                    stripeData = response;
+                    checkoutStage = "stripe";
                 }
             })
             .catch((err)=>{
@@ -61,14 +64,13 @@
             })
             .finally(()=>{
                 loader = false;
-                checkoutStage = "stripe";
             });
     }
 </script>
 
 <svelte:head>
     <title>Checkout | Inlet.Shop</title>
-    <!--<script src="https://js.stripe.com/v3/"></script>-->
+    <script src="https://js.stripe.com/v3/"></script>
 </svelte:head>
 
 {#if loader}
@@ -92,7 +94,11 @@
             on:notify={notify}
         />
     {:else if checkoutStage === "stripe"}
-        <h1>Stripe checkout</h1>
+        <StripeCheckout
+            publishableKey={stripeData.publishableKey}
+            clientSecret={stripeData.clientSecret}
+            on:loader={setLoader}
+        />
     {/if}
 </div>
 
