@@ -21,6 +21,15 @@
                     dispatch("notify", {type: "error", message: response.error.message});
                 }else{
                     vendor = response.find(v => v._id === vendorId);
+                    let total = 0;
+                    for(let i = 0; i < vendor.items.length; i++){
+                        const variation = vendor.items[i].variation
+                        const quantity = vendor.items[i].quantity;
+                        total += (variation.price + variation.shipping) * quantity;
+                    }
+                    dispatch("setTotal", {
+                        total: total
+                    });
                 }
             })
             .catch((err)=>{

@@ -6,11 +6,12 @@
         publishableKey,
         clientSecret,
         orderId,
-        orderToken
+        orderToken,
+        total
     } = $props();
 
     const stripe = Stripe(publishableKey);
-    const appearance = {theme: "stripe"};
+    const appearance = {theme: "night"};
     const elements = stripe.elements({
         appearance: appearance,
         clientSecret: clientSecret
@@ -46,10 +47,15 @@
         }
     }
 
+    const formatPrice = (num)=>{
+        return `$${(num / 100).toFixed(2)}`;
+    }
+
     onMount(stripeSetup);
 </script>
 
 <div class="StripeCheckout">
+    <h1>{formatPrice(total)}</h1>
     <form class="paymentForm" onsubmit={handleSubmit}>
         <div id="payment-element"></div>
         <button class="submitBtn button">
@@ -71,6 +77,12 @@
         flex-grow: 1;
     }
 
+    h1{
+        color: rgb(133, 217, 150);
+        margin-bottom: 15px;
+        font-size: 35px;
+    }
+
     .paymentForm{
         width: 100%;
     }
@@ -78,6 +90,6 @@
     .submitBtn{
         width: 100%;
         margin-top: 35px;
-        background: green;
+        background: rgb(133, 217, 150);
     }
 </style>

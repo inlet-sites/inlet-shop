@@ -11,6 +11,7 @@
     let notifier = $state({type: "", message: ""});
     let checkoutStage = $state("customerInfo");
     let orderData = $state();
+    let total = $state();
 
     const setLoader = (event)=>{
         loader = event.detail.on;
@@ -85,6 +86,7 @@
         vendorId={data.vendorId}
         on:loader={setLoader}
         on:notify={notify}
+        on:setTotal={(event)=>{total = event.detail.total}}
     />
 
     {#if checkoutStage === "customerInfo"}
@@ -98,6 +100,7 @@
             clientSecret={orderData.clientSecret}
             orderId={orderData.orderId}
             orderToken={orderData.orderToken}
+            total={total}
             on:loader={setLoader}
         />
     {/if}
