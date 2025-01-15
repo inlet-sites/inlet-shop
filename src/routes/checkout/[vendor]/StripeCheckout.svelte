@@ -2,7 +2,12 @@
     import {onMount, createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    let {publishableKey, clientSecret} = $props();
+    let {
+        publishableKey,
+        clientSecret,
+        orderId,
+        orderToken
+    } = $props();
 
     const stripe = Stripe(publishableKey);
     const appearance = {theme: "stripe"};
@@ -24,7 +29,7 @@
         const {error} = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: `${import.meta.env.VITE_URL}/checkout/complete`
+                return_url: `${import.meta.env.VITE_URL}/order/${orderId}/${orderToken}`
             }
         });
 

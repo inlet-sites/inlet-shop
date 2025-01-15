@@ -1,4 +1,4 @@
-export const load = async ({fetch, params})=>{
+export const load = async ({params})=>{
     return {
         vendorId: params.vendor
     };

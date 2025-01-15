@@ -11,7 +11,7 @@
     let notifier = $state({type: "", message: ""});
     let checkoutStage = $state("customerInfo");
     let orderData = $state();
-    let stripeData = $state();
+    let orderData = $state();
 
     const setLoader = (event)=>{
         loader = event.detail.on;
@@ -50,7 +50,7 @@
                         }
                     });
                 }else{
-                    stripeData = response;
+                    orderData = response;
                     checkoutStage = "stripe";
                 }
             })
@@ -95,8 +95,10 @@
         />
     {:else if checkoutStage === "stripe"}
         <StripeCheckout
-            publishableKey={stripeData.publishableKey}
-            clientSecret={stripeData.clientSecret}
+            publishableKey={orderData.publishableKey}
+            clientSecret={orderData.clientSecret}
+            orderId={orderData.orderId}
+            orderToken={orderData.orderToken}
             on:loader={setLoader}
         />
     {/if}
