@@ -11,7 +11,6 @@
     let notifier = $state({type: "", message: ""});
     let checkoutStage = $state("customerInfo");
     let orderData = $state();
-    let orderData = $state();
 
     const setLoader = (event)=>{
         loader = event.detail.on;

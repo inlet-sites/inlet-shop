@@ -57,7 +57,8 @@
     }
 
     const checkout = ()=>{
-        console.log("checking out");
+        console.log(vendors[currentVendor]);
+        window.location.href = `/checkout/${vendors[currentVendor]._id}`;
     }
 
     const clearFullCart = ()=>{
