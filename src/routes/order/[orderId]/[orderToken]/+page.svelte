@@ -3,7 +3,7 @@
     import CartItem from "../../../../components/CartItem.svelte";
 
     let {data} = $props();
-    console.log(data.order.items);
+    console.log(data.order.vendor[0]);
 
     const formatDate = (date)=>{
         const formDate = new Date(date);
@@ -37,16 +37,34 @@
 
     const calculatePrice = ()=>{
         let price = 0;
+        let shipping = 0;
         for(let i = 0; i < data.order.items.length; i++){
             const item = data.order.items[i];
             for(let j = 0; j < item.product.variations.length; j++){
                 const variation = item.product.variations[j];
                 if(variation.id === item.variation){
+                    shipping += variation.shipping * item.quantity;
                     price += variation.price * item.quantity;
                 }
             }
         }
-        return price;
+        return {
+            price: price,
+            shipping: shipping,
+            total: price + shipping
+        };
+    }
+    let {price, shipping, total} = calculatePrice();
+
+    const getStatus = ()=>{
+        switch(data.order.status){
+            case "incomplete": return "Awaiting Payment";
+            case "paid": return "Awaiting Vendor Confirmation";
+            case "paymentFailed": return "Payment Failed";
+            case "declined": return "Payment Failed";
+            case "confirmed": return "Confirmed. Awaiting Shipment";
+            case "shipped": return "Shipped";
+        }
     }
 </script>
 
@@ -79,15 +97,19 @@
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td>{formatPrice(calculatePrice())}</td>
+                    <td>{formatPrice(price)}</td>
                 </tr>
                 <tr>
                     <td>Shipping</td>
-                    <td>???</td>
+                    <td>{formatPrice(shipping)}</td>
                 </tr>
                 <tr>
                     <td>Total:</td>
-                    <td>???</td>
+                    <td>{formatPrice(total)}</td>
+                </tr>
+                <tr class="status">
+                    <td>Current Status:</td>
+                    <td>{getStatus()}</td>
                 </tr>
             </tbody>
         </table>
@@ -100,12 +122,33 @@
                 edit={false}
             />
         {/each}
+
+        <p class="contactNote">If there are any issues with your order, please contact the vendor with the below information:</p>
+
+        {#if data.order.vendor[0].contact.phone}
+            <div class="contact">
+                <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+                    <path d="M18.1182 14.702L14 15.5C11.2183 14.1038 9.5 12.5 8.5 10L9.26995 5.8699L7.81452 2L4.0636 2C2.93605 2 2.04814 2.93178 2.21654 4.04668C2.63695 6.83 3.87653 11.8765 7.5 15.5C11.3052 19.3052 16.7857 20.9564 19.802 21.6127C20.9668 21.8662 22 20.9575 22 19.7655L22 16.1812L18.1182 14.702Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <a href="tel:{data.order.vendor[0].contact.phone}">{data.order.vendor[0].contact.phone}</a>
+            </div>
+        {/if}
+        {#if data.order.vendor[0].contact.email}
+            <div class="contact">
+                <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+                    <path d="M7 9L12 12.5L17 9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z" stroke="#ffffff" stroke-width="1.5"></path>
+                </svg>
+                <a href="mailto:{data.order.vendor[0].contact.email}">{data.order.vendor[0].contact.email}</a>
+            </div>
+        {/if}
     {/if}
 </div>
 
 <style>
     .container{
         color: var(--text);
+        padding: 35px;
     }
 
     .error{
@@ -124,5 +167,36 @@
     .error a{
         color: var(--text);
         margin-top: 35px;
+    }
+
+    h2{
+        margin-top: 35px;
+    }
+
+    table{
+        font-size: 22px;
+    }
+
+    .contactNote{
+        margin-top: 35px;
+    }
+
+    td:first-of-type{
+        text-align: right;
+        padding-right: 35px;
+    }
+
+    .status{
+        color: rgba(255, 150, 0, 0.75);
+    }
+
+    .contact{
+        display: flex;
+        align-items: center;
+    }
+
+    a{
+        color: var(--text);
+        margin: 15px 0 15px 15px;
     }
 </style>
