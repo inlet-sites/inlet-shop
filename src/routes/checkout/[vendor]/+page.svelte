@@ -89,6 +89,8 @@
 {/if}
 
 <div class="container">
+    <a href="/cart" class="cartReturn">&lt; Return to Cart</a>
+
     <Items
         vendorId={data.vendorId}
         on:loader={setLoader}
@@ -118,6 +120,22 @@
         display: flex;
         height: 100vh;
         width: 100vw;
+        position: relative;
+    }
+
+    .cartReturn{
+        position: absolute;
+        top: 35px;
+        left: 35px;
+        background: white;
+        color: black;
+        padding: 5px;
+        text-decoration: none;
+        border: 2px outset white;
+    }
+
+    .cartReturn:active{
+        border: 2px inset white;
     }
 
     @media screen and (max-width: 1200px){

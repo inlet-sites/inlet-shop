@@ -36,13 +36,13 @@
     }
 
     .error{
-        background: rgba(249, 114, 114, 0.75);
+        background: rgba(249, 114, 114, 0.95);
         color: rgb(200, 200, 200);
         font-weight: bold;
     }
 
     .success{
-        background: rgba(10, 237, 2, 0.5);
+        background: rgba(10, 237, 2, 0.95);
         font-weight: bold;
     }
 </style>

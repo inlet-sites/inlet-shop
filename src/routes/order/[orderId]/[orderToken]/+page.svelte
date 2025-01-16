@@ -3,7 +3,6 @@
     import CartItem from "../../../../components/CartItem.svelte";
 
     let {data} = $props();
-    console.log(data.order.vendor[0]);
 
     const formatDate = (date)=>{
         const formDate = new Date(date);
@@ -58,7 +57,7 @@
 
     const getStatus = ()=>{
         switch(data.order.status){
-            case "incomplete": return "Awaiting Payment";
+            case "incomplete": return "Payment Processing";
             case "paid": return "Awaiting Vendor Confirmation";
             case "paymentFailed": return "Payment Failed";
             case "declined": return "Payment Failed";
