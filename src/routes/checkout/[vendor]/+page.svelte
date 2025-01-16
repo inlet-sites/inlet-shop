@@ -51,6 +51,7 @@
                     });
                 }else{
                     orderData = response;
+                    updateCart();
                     checkoutStage = "stripe";
                 }
             })
@@ -65,6 +66,12 @@
             .finally(()=>{
                 loader = false;
             });
+    }
+
+    const updateCart = ()=>{
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        cart[data.vendorId] = undefined;
+        localStorage.setItem("cart", JSON.stringify(cart));
     }
 </script>
 
