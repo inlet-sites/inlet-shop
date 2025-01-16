@@ -30,7 +30,7 @@
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    notify("error", response.message);
+                    notify("error", response.error.message);
                 }else{
                     vendors = response;
                 }
