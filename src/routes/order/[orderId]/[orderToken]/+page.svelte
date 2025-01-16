@@ -199,4 +199,20 @@
         color: var(--text);
         margin: 15px 0 15px 15px;
     }
+
+    @media screen and (max-width: 700px){
+        .container{
+            padding: 15px;
+        }
+
+        table{
+            font-size: 18px;
+            margin: 0 auto;
+        }
+
+        td{
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 5px;
+        }
+    }
 </style>
