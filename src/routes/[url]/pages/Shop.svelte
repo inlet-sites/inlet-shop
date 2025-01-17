@@ -146,21 +146,33 @@
     }
 
     .product{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         background: none;
-        border: 1px solid var(--text);
+        border: 1px solid rgba(255, 0, 0, 0.35);
         width: 250px;
         color: white;
         margin: 25px;
         cursor: pointer;
         text-decoration: none;
+        background: black;
     }
 
     .product img{
-        width: 100%;
+        max-width: 100%;
+        max-height: 250px;
+        margin: 0 auto;
     }
 
-    .product h2, .product h3{
-        text-align: center;
+    .product h2{
+        margin-left: 15px;
+        font-size: 28px;
+    }
+
+    .product h3{
+        font-size: 14px;
+        margin: 0 0 15px 15px;
     }
 
     @media screen and (max-width: 900px){
