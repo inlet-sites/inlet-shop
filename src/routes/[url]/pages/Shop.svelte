@@ -163,6 +163,8 @@
         max-width: 100%;
         max-height: 250px;
         margin: 0 auto;
+        border: 1px solid white;
+        border-radius: 0 0 5px 5px;
     }
 
     .product h2{
