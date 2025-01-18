@@ -3,6 +3,7 @@
 
     const dispatch = createEventDispatcher();
     let {item, vendor, edit} = $props();
+    $inspect(item);
 
     const getImage = (item)=>{
         if(item.variation.images.length > 0){
@@ -50,6 +51,10 @@
             </svg>
         </button>
     {/if}
+
+    {#if item.variation.purchaseOption === "buy"}
+        <p class="buyOption">Pick up item in store</p>
+    {/if}
 </div>
 
 <style>
@@ -82,6 +87,15 @@
     .removeItemBtn{
         background: none;
         border: none;
+    }
+
+    .buyOption{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: orange;
+        font-size: 15px;
+        font-weight: bold;
     }
 
     @media screen and (max-width: 800px){
