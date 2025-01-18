@@ -169,6 +169,10 @@
             <h3>{data.product.variations[variationIndex].quantity} available</h3>
         {/if}
 
+        {#if data.product.variations[variationIndex].purchaseOption === "buy"}
+            <h3 class="storeBuy">Shipping not available. Pick up in store.</h3>
+        {/if}
+
         <div class="tags">
             {#each data.product.tags as tag}
                 <p>{tag}</p>
@@ -282,6 +286,10 @@
 
     .unavailable{
         color: red;
+    }
+
+    .storeBuy{
+        color: orange;
     }
 
     .purchase{
