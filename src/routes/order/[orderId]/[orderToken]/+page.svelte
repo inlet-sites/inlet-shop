@@ -76,6 +76,10 @@
             <a href="/">Return to Shopping</a>
         </div>
     {:else}
+        {#if data.order.status === "incomplete"}
+            <p class="statusDescription">Your payment is currently being processed.</p>
+        {/if}
+
         <table>
             <tbody>
                 <tr>
@@ -166,6 +170,13 @@
     .error a{
         color: var(--text);
         margin-top: 35px;
+    }
+
+    .statusDescription{
+        margin: 35px;
+        padding: 15px;
+        font-size: 28px;
+        border-bottom: 1px solid white;
     }
 
     h2{
