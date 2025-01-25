@@ -80,6 +80,8 @@
             <p class="statusDescription">Your payment is currently being processed.</p>
         {:else if data.order.status === "paid"}
             <p class="statusDescription">Payment has been processed and the order is awaiting confirmation from the vendor.</p>
+        {:else if data.order.status === "paymentFailed"}
+            <p class="statusDescription">Payment failed and order has been cancelled.</p>
         {/if}
 
         <table>
