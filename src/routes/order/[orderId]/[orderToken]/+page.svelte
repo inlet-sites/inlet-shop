@@ -78,6 +78,8 @@
     {:else}
         {#if data.order.status === "incomplete"}
             <p class="statusDescription">Your payment is currently being processed.</p>
+        {:else if data.order.status === "paid"}
+            <p class="statusDescription">Payment has been processed and the order is awaiting confirmation from the vendor.</p>
         {/if}
 
         <table>
