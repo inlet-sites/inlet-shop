@@ -60,7 +60,7 @@
             case "incomplete": return "Payment Processing";
             case "paid": return "Awaiting Vendor Confirmation";
             case "paymentFailed": return "Payment Failed";
-            case "declined": return "Payment Failed";
+            case "declined": return "Declined by Vendor";
             case "confirmed": return "Confirmed. Awaiting Shipment";
             case "shipped": return "Shipped";
         }
@@ -82,6 +82,8 @@
             <p class="statusDescription">Payment has been processed and the order is awaiting confirmation from the vendor.</p>
         {:else if data.order.status === "paymentFailed"}
             <p class="statusDescription">Payment failed and order has been cancelled.</p>
+        {:else if data.order.status === "declined"}
+            <p class="statusDescription">Vendor has declined the order and will issue a refund. Contact vendor with information below if refund is not recieved within 10 business days.</p>
         {/if}
 
         <table>
