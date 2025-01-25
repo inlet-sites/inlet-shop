@@ -84,6 +84,8 @@
             <p class="statusDescription">Payment failed and order has been cancelled.</p>
         {:else if data.order.status === "declined"}
             <p class="statusDescription">Vendor has declined the order and will issue a refund. Contact vendor with information below if refund is not recieved within 10 business days.</p>
+        {:else if data.order.status === "confirmed"}
+            <p class="statusDescription">Vendor has confirmed your order and you will be notified when it has shipped</p>
         {/if}
 
         <table>
