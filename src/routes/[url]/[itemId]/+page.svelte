@@ -311,12 +311,6 @@
         margin-top: 15px;
     }
 
-    .purchase input{
-        margin-bottom: 35px;
-        font-size: 22px;
-        max-width: 100px;
-    }
-
     .purchase button{
         position: absolute;
         bottom: 35px;
