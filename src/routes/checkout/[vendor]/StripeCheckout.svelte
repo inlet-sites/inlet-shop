@@ -4,13 +4,14 @@
     const dispatch = createEventDispatcher();
     let {
         publishableKey,
+        connectedId,
         clientSecret,
         orderId,
         orderToken,
         total
     } = $props();
 
-    const stripe = Stripe(publishableKey);
+    const stripe = Stripe(publishableKey, {stripeAccount: connectedId});
     const appearance = {theme: "night"};
     const elements = stripe.elements({
         appearance: appearance,

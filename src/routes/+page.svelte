@@ -5,6 +5,7 @@
     import Loader from "../components/Loader.svelte";
     import Notifier from "../components/Notifier.svelte";
     import Header from "../components/Header.svelte";
+    import LandingHeader from "./LandingHeader.svelte";
 
     let vendors = $state([]);
     let loader = $state(false);
@@ -56,7 +57,9 @@
     <Loader/>
 {/if}
 
-<Header home={true}/>
+<Header/>
+
+<LandingHeader/>
 
 <div class="vendors">
     {#each vendors as vendor}

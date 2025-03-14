@@ -3,7 +3,7 @@
     import logo from "$lib/logo.png";
 
     const dispatch = createEventDispatcher();
-    let {storeUrl, storeName, home, cart} = $props();
+    let {storeUrl, storeName, cart} = $props();
 
     const changePage = (page)=>{
         dispatch("changePage", {page: page});
@@ -29,13 +29,6 @@
             <button onclick={()=>{changePage("about")}}>About</button>
             <button onclick={()=>{changePage("shop")}}>Shop</button>
         </div>
-    {/if}
-
-    {#if home}
-        <a
-            class="becomeVendor"
-            href="https://vendor.inlet.shop"
-        >Become a vendor</a>
     {/if}
 
     {#if !cart}
@@ -140,11 +133,6 @@
     }
 
     @media screen and (max-width: 900px){
-        header{
-            flex-direction: column;
-            height: 75px;
-        }
-
         .becomeVendor{
             margin-left: initial;
         }

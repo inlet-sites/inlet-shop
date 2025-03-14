@@ -106,6 +106,7 @@
     {:else if checkoutStage === "stripe"}
         <StripeCheckout
             publishableKey={orderData.publishableKey}
+            connectedId={orderData.connectedId}
             clientSecret={orderData.clientSecret}
             orderId={orderData.orderId}
             orderToken={orderData.orderToken}
