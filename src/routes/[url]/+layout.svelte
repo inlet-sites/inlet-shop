@@ -25,12 +25,10 @@
         }, 7500);
     }
 
-    const changePage = (event)=>{
-        console.log(event);
-        const page = event.detail.page;
+    const changePage = (page)=>{
         switch(page){
-            case "about": goto(`/`); break;
-            case "shop": goto("/shop"); break;
+            case "about": goto(`/${data.vendor.url}`); break;
+            case "shop": goto(`/${data.vendor.url}/shop`); break;
         }
     }
 
@@ -52,7 +50,7 @@
 <Header
     storeUrl={data.vendor.url}
     storeName={data.vendor.store}
-    on:changePage={changePage}
+    changePage={changePage}
 />
 
 {@render children()}

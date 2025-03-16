@@ -3,11 +3,7 @@
     import logo from "$lib/logo.png";
 
     const dispatch = createEventDispatcher();
-    let {storeUrl, storeName, cart} = $props();
-
-    const changePage = (page)=>{
-        dispatch("changePage", {page: page});
-    }
+    let {storeUrl, storeName, cart, changePage} = $props();
 </script>
 
 <header>
