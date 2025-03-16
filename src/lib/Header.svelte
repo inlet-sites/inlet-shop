@@ -123,6 +123,11 @@
     }
 
     @media screen and (max-width: 900px){
+        header{
+            flex-direction: column;
+            height: 100px;
+        }
+
         .arrow{
             display: none;
         }
@@ -139,6 +144,11 @@
             display: flex;
             justify-content: center;
             margin-top: 15px;
+        }
+
+        .cart{
+            height: 50%;
+            right: 15px;
         }
     }
 </style>
