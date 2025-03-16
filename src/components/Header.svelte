@@ -78,12 +78,6 @@
         margin: 0 15px;
     }
 
-    .becomeVendor{
-        color: var(--text);
-        margin: 0 35px 0 auto;
-        font-size: 14px;
-    }
-
     .vendor{
         text-decoration: none;
         color: var(--text);

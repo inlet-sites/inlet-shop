@@ -38,7 +38,7 @@
             >
         </label>
 
-        <label>Full Address
+        <label>Shipping Address
             <textarea
                 rows="5"
                 bind:value={address}
