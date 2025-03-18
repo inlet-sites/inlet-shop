@@ -6,11 +6,12 @@
     let selectedTag = $state("all");
 
     const getTags = (products)=>{
+        console.log(products);
         const obj = {};
         obj["all"] = [];
         for(let i = 0; i < products.length; i++){
             obj["all"].push(products[i]);
-            for(let j = 0; i < products.length; i++){
+            for(let j = 0; j < products[i].tags.length; j++){
                 let tag = products[i].tags[j].toLowerCase();
                 if(obj[tag]){
                     obj[tag].push(products[i]);
