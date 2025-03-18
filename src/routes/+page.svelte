@@ -6,6 +6,7 @@
     import Notifier from "../components/Notifier.svelte";
     import Header from "../components/Header.svelte";
     import LandingHeader from "./LandingHeader.svelte";
+    import VendorCard from "./VendorCard.svelte";
 
     let vendors = $state([]);
     let loader = $state(false);
@@ -62,25 +63,24 @@
 
 <LandingHeader/>
 
-<div class="vendors">
-    {#each vendors as vendor}
-        <a href="/{vendor.url}/shop" class="vendor">
-            {#if vendor.image}
-                <img src="{apiUrl}/document/{vendor.image}" alt={vendor.store}>
-            {:else}
-                <img src="{apiUrl}/document/defaultVendorImage.png" alt={vendor.store}>
-            {/if}
-            <h3>{vendor.store}</h3>
-            <p>{vendor.slogan}</p>
-        </a>
-    {/each}
+<div class="container">
+    <div class="vendors">
+        {#each vendors as vendor}
+            <VendorCard
+                vendor={vendor}
+            />
+        {/each}
+    </div>
 </div>
 
 <style>
+    .container{
+        padding: 35px;
+    }
+
     .vendors{
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
     }
 
     .vendor{
@@ -107,5 +107,11 @@
         max-height: 75%;
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
+    }
+
+    @media screen and (max-width: 600px){
+        .container{
+            padding: 15px;
+        }
     }
 </style>
