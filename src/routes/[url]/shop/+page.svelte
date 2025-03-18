@@ -1,4 +1,6 @@
 <script>
+    import Product from "./Product.svelte";
+
     let {data} = $props();
     let selectedTag = $state("all");
 
@@ -32,21 +34,32 @@
             <button>{tag.toUpperCase()}</button>
         {/each}
     </div>
+
+    <div class="products">
+        {#each data.products as product}
+            <Product
+                product={product}
+                url={data.vendor.url}
+            />
+        {/each}
+    </div>
 </div>
 
 <style>
     .container{
         color: white;
+        padding: 35px;
     }
 
     .tags{
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .tags button{
         padding: 5px 15px;
-        margin: 15px;
+        margin: 5px 15px;
         border: 1px solid var(--red);
         background: none;
         color: var(--white);
@@ -56,5 +69,11 @@
 
     .tags button:active{
         color: var(--red);
+    }
+
+    @media screen and (max-width: 600px){
+        .container{
+            padding: 15px;
+        }
     }
 </style>
