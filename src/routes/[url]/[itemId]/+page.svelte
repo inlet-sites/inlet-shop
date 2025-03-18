@@ -1,7 +1,6 @@
 <script>
     import Images from "./Images.svelte";
     import Notifier from "../../../components/Notifier.svelte";
-    import Header from "../../../components/Header.svelte";
 
     let {data} = $props();
     let clickedImage = $state(0);
@@ -129,12 +128,6 @@
         message={notifier.message}
     />
 {/if}
-
-<Header
-    storeUrl={data.vendor.url}
-    storeName={data.vendor.store}
-    on:changePage={changePage}
-/>
 
 <div class="container">
     {#if images}
