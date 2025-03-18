@@ -10,6 +10,7 @@
     let vendors = $state([]);
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     const notify = (type, message)=>{
         notifier.type = type;
@@ -22,7 +23,7 @@
 
     onMount(()=>{
         loader = true;
-        fetch(`${import.meta.env.VITE_API_URL}/vendor`, {
+        fetch(`${apiUrl}/vendor`, {
             method: "get",
             headers: {
                 "Content-Type": "application/json"
@@ -63,11 +64,11 @@
 
 <div class="vendors">
     {#each vendors as vendor}
-        <a href="/{vendor.url}" class="vendor">
+        <a href="/{vendor.url}/shop" class="vendor">
             {#if vendor.image}
-                <img src="{import.meta.env.VITE_API_URL}/document/{vendor.image}" alt={vendor.store}>
+                <img src="{apiUrl}/document/{vendor.image}" alt={vendor.store}>
             {:else}
-                <img src="{import.meta.env.VITE_API_URL}/document/defaultVendorImage.png" alt={vendor.store}>
+                <img src="{apiUrl}/document/defaultVendorImage.png" alt={vendor.store}>
             {/if}
             <h3>{vendor.store}</h3>
             <p>{vendor.slogan}</p>
