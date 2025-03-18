@@ -2,6 +2,7 @@
     import Product from "./Product.svelte";
 
     let {data} = $props();
+    let displayProducts = $state(data.products);
     let selectedTag = $state("all");
 
     const getTags = (products)=>{
@@ -22,6 +23,10 @@
     }
 
     let tags = $state(getTags(data.products));
+
+    const tagSearch = (tag)=>{
+        displayProducts = tags[tag.toLowerCase()];
+    }
 </script>
 
 <svelte:head>
@@ -31,12 +36,12 @@
 <div class="container">
     <div class="tags">
         {#each Object.keys(tags) as tag}
-            <button>{tag.toUpperCase()}</button>
+            <button onclick={()=>{tagSearch(tag)}}>{tag.toUpperCase()}</button>
         {/each}
     </div>
 
     <div class="products">
-        {#each data.products as product}
+        {#each displayProducts as product}
             <Product
                 product={product}
                 url={data.vendor.url}
