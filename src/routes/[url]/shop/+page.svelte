@@ -6,7 +6,6 @@
     let selectedTag = $state("all");
 
     const getTags = (products)=>{
-        console.log(products);
         const obj = {};
         obj["all"] = [];
         for(let i = 0; i < products.length; i++){

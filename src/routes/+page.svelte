@@ -83,32 +83,6 @@
         flex-wrap: wrap;
     }
 
-    .vendor{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 250px;
-        width: 250px;
-        border: 1px solid white;
-        margin: 25px;
-        text-decoration: none;
-        background: white;
-        border-radius: 15px;
-        color: black;
-    }
-
-    .vendor h3{
-        text-decoration: underline;
-        margin: auto 0;
-    }
-
-    .vendor img{
-        max-width: 100%;
-        max-height: 75%;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
-
     @media screen and (max-width: 600px){
         .container{
             padding: 15px;

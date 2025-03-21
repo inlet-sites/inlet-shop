@@ -3,7 +3,6 @@
 
     const dispatch = createEventDispatcher();
     let {item, vendor, edit} = $props();
-    $inspect(item);
 
     const getImage = (item)=>{
         if(item.variation.images.length > 0){

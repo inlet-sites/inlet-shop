@@ -57,7 +57,6 @@
     }
 
     const checkout = ()=>{
-        console.log(vendors[currentVendor]);
         window.location.href = `/checkout/${vendors[currentVendor]._id}`;
     }
 
