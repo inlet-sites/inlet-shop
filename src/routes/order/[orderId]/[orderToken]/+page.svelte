@@ -3,6 +3,7 @@
     import CartItem from "../../../../components/CartItem.svelte";
 
     let {data} = $props();
+    $inspect(data);
 
     const formatDate = (date)=>{
         const formDate = new Date(date);
@@ -92,6 +93,10 @@
 
         <table>
             <tbody>
+                <tr>
+                    <td>Order Number:</td>
+                    <td>{data.order.orderNumber}</td>
+                </tr>
                 <tr>
                     <td>Store:</td>
                     <td>{data.order.vendor[0].store}</td>
