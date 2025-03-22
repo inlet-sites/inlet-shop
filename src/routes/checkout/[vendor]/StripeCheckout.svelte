@@ -8,7 +8,8 @@
         clientSecret,
         orderId,
         orderToken,
-        total
+        total,
+        vendorId
     } = $props();
 
     const stripe = Stripe(publishableKey, {stripeAccount: connectedId});
@@ -28,6 +29,11 @@
 
     const handleSubmit = async ()=>{
         dispatch("loader", {on: true});
+        
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        cart[vendorId] = undefined;
+        localStorage.setItem("cart", JSON.stringify(cart));
+
         const {error} = await stripe.confirmPayment({
             elements,
             confirmParams: {

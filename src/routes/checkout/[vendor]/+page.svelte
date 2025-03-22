@@ -12,6 +12,7 @@
     let checkoutStage = $state("customerInfo");
     let orderData = $state();
     let total = $state();
+    $inspect(data);
 
     const setLoader = (event)=>{
         loader = event.detail.on;
@@ -51,7 +52,6 @@
                     });
                 }else{
                     orderData = response;
-                    updateCart();
                     checkoutStage = "stripe";
                 }
             })
@@ -66,12 +66,6 @@
             .finally(()=>{
                 loader = false;
             });
-    }
-
-    const updateCart = ()=>{
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        cart[data.vendorId] = undefined;
-        localStorage.setItem("cart", JSON.stringify(cart));
     }
 </script>
 
@@ -111,6 +105,7 @@
             orderId={orderData.orderId}
             orderToken={orderData.orderToken}
             total={total}
+            vendorId={data.vendorId}
             on:loader={setLoader}
         />
     {/if}
