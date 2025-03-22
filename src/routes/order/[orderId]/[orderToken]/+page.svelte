@@ -3,7 +3,6 @@
     import CartItem from "../../../../components/CartItem.svelte";
 
     let {data} = $props();
-    $inspect(data);
 
     const formatDate = (date)=>{
         const formDate = new Date(date);
