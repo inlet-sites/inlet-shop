@@ -98,6 +98,10 @@
                 const product = cart[data.vendor.id].find(itemExists);
                 if(product){
                     product.quantity += buyQuantity
+                    if(product.quantity > quant){
+                        createNotifier("error", `Only ${quant} available. ${product.quantity - buyQuantity} already in cart`);
+                        return;
+                    }
                 }else{
                     cart[data.vendor.id].push(item);
                 }
