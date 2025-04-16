@@ -12,7 +12,6 @@
     let checkoutStage = $state("customerInfo");
     let orderData = $state();
     let total = $state();
-    $inspect(data);
 
     const setLoader = (event)=>{
         loader = event.detail.on;
