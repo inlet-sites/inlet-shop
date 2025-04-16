@@ -67,6 +67,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Order {data.order.orderNumber} | Inlet.Shop</title>
+</svelte:head>
+
 <Header/>
 
 <div class="container">
