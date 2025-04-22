@@ -37,7 +37,7 @@
         const {error} = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: `${import.meta.env.VITE_URL}/order/${orderId}/${orderToken}`
+                return_url: `${import.meta.env.VITE_API_URL}/order/${orderId}/${orderToken}`
             }
         });
 
