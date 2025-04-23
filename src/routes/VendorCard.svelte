@@ -5,7 +5,7 @@
 
 <a class="VendorCard" href="/{vendor.url}/shop">
     <div class="imageContainer">
-        {#if vendor.image}
+        {#if vendor.publicData.image}
             <img src="{apiUrl}/document/{vendor.image}" alt={vendor.store}>
         {:else}
             <img src="{apiUrl}/document/defaultVendorImage.png" alt={vendor.store}>
