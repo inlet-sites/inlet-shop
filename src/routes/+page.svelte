@@ -1,5 +1,4 @@
 <script>
-    import {onMount} from "svelte";
     import "../global.css";
     import logo from "$lib/logo.png";
     import Loader from "../components/Loader.svelte";
@@ -8,10 +7,11 @@
     import LandingHeader from "./LandingHeader.svelte";
     import VendorCard from "./VendorCard.svelte";
 
-    let vendors = $state([]);
+    let {data} = $props();
+    let {vendors} = data;
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
-    const apiUrl = import.meta.env.VITE_API_URL;
+    $inspect(vendors);
 
     const notify = (type, message)=>{
         notifier.type = type;
@@ -21,30 +21,6 @@
             notifier.type = "";
         }, 7500);
     }
-
-    onMount(()=>{
-        loader = true;
-        fetch(`${apiUrl}/vendor`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error){
-                    notify("error", response.error.message);
-                }else{
-                    vendors = response;
-                }
-            })
-            .catch((err)=>{
-                notify("error", "Something went wrong, try refreshing the page");
-            })
-            .finally(()=>{
-                loader = false;
-            });
-    });
 </script>
 
 <svelte:head>
