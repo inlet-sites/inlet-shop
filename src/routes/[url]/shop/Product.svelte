@@ -20,7 +20,7 @@
 <a href = "/{url}/{product.id}" class="Product">
     <div class="imageContainer">
         <img
-            src="{import.meta.env.VITE_URL}/document/{product.images[0]}"
+            src="{import.meta.env.VITE_API_URL}/document/{product.images[0]}"
             alt={product.name}
             loading="lazy"
         >
