@@ -11,7 +11,6 @@
     let {vendors} = data;
     let loader = $state(false);
     let notifier = $state({type: "", message: ""});
-    $inspect(vendors);
 
     const notify = (type, message)=>{
         notifier.type = type;

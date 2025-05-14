@@ -1,4 +1,5 @@
 <script>
+    import {goto} from "$app/navigation";
     import Header from "../../../../components/Header.svelte";
     import CartItem from "../../../../components/CartItem.svelte";
 
