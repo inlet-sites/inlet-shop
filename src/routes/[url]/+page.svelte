@@ -39,6 +39,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>{data.vendor.store} | Inlet Shop</title>
+</svelte:head>
+
 {#if data.vendor.html}
     {@html data.vendor.html}
 {:else}
@@ -171,7 +175,7 @@
                     </svg>
                     <p>{pd.address.text}</p>
                 </a>
-            {:else if pd.address}
+            {:else if pd.address.text}
                 <div class="contact">
                      <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" color="currentColor">
                         <path d="M20 10C20 14.4183 12 22 12 22C12 22 4 14.4183 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10Z" stroke="currentColor" stroke-width="1.5"></path>
